@@ -29,6 +29,7 @@ body {
 .menu-item {
   position: relative;
   display: inline-block;
+  cursor: pointer;
 }
 
 .dropdown-container {
@@ -41,6 +42,7 @@ body {
 
 .dropdown-container ul {
   margin-top: 15px;
+  list-style-type: none;
 }
 
 .dropdown-container a {

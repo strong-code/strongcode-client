@@ -1,0 +1,54 @@
+{
+  "categories": [
+    {
+      "title": "downloads",
+      "links": [
+        {
+          "title": "1337x",
+          "url": "https://1337x.to"
+        },
+        {
+          "title": "RARBG",
+          "url": "https://rarbg.to/torrents.php"
+        },
+        {
+          "title": "LibGen",
+          "url": "https://libgen.is"
+        },
+        {
+          "title": "AudioBookBay",
+          "url": "https://audiobookbay.nl"
+        }
+      ]
+    },
+    {
+      "title": "4chan",
+      "links": [
+        {
+          "title": "/biz/",
+          "url": "https://boards.4chan.org/biz"
+        },
+        {
+          "title": "/g/",
+          "url": "https://boards.4chan.org/g/"
+        },
+        {
+          "title": "/v/",
+          "url": "https://boards.4chan.org/v/"
+        },
+        {
+          "title": "/fit/",
+          "url": "https://boards.4chan.org/fit/"
+        },
+        {
+          "title": "/p/",
+          "url": "https://boards.4chan.org/p/"
+        },
+        {
+          "title": "/out/",
+          "url": "https://boards.4chan.org/out/"
+        }
+      ]
+    }
+  ]
+}
