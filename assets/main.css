@@ -35,8 +35,11 @@ body {
   display: none;
   position: absolute;
   min-width: 200px;
-  left: -85px;
+  left: -80px;
   z-index: 1;
+}
+
+.dropdown-container ul {
   margin-top: 15px;
 }
 
@@ -44,8 +47,13 @@ body {
   color: black;
   text-decoration: none;
   display: block;
+  margin-top: 5px;
 }
 
-.dropdown-container:hover .dropdown-container { display: block; }
+.dropdown-container a:hover {
+  opacity: 30%;
+}
 
-.menu-item:hover .dropdown-container { display: block; }
+.menu-item:hover .dropdown-container {
+  display: block; 
+}
