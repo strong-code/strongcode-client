@@ -49,6 +49,122 @@
           "url": "https://boards.4chan.org/out/"
         }
       ]
+    },
+    {
+      "title": "coding",
+      "links": [
+        {
+          "title": "Hacker News",
+          "url": "https://news.ycombinator.com/"
+        },
+        {
+          "title": "Lobste.rs",
+          "url": "https://lobste.rs/"
+        },
+        {
+          "title": "DigitalOcean",
+          "url": "https://cloud.digitalocean.com/projects"
+        },
+        {
+          "title": "GitHub",
+          "url": "https://github.com/"
+        },
+        {
+          "title": "WebMshare",
+          "url": "https://webmshare.com/"
+        },
+        {
+          "title": "Whats My DNS",
+          "url": "https://www.whatsmydns.net/"
+        }
+      ]
+    },
+    {
+      "title": "gaming",
+      "links": [
+        {
+          "title": "Crackwatch",
+          "url": "https://crackwatch.com/"
+        },
+        {
+          "title": "Steam",
+          "url": "https://store.steampowered.com/"
+        },
+        {
+          "title": "Fitgirl",
+          "url": "https://fitgirl-repacks.site/"
+        }
+      ]
+    },
+    {
+      "title": "leisure",
+      "links": [
+        {
+          "title": "YouTube",
+          "url": "https://www.youtube.com/"
+        },
+        {
+          "title": "500px",
+          "url": "https://500px.com/"
+        },
+        {
+          "title": "GoodReads",
+          "url": "https://goodreads.com/"
+        },
+        {
+          "title": "CoinMarketCap",
+          "url": "https://coinmarketcap.com/"
+        },
+        {
+          "title": "Slickdeals",
+          "url": "https://slickdeals.net/"
+        },
+        {
+          "title": "Misc",
+          "url": "https://forum.bodybuilding.com/forumdisplay.php?f=19"
+        }
+      ]
+    },
+    {
+      "title": "business",
+      "links": [
+        {
+          "title": "Ahrefs",
+          "url": "https://ahrefs.com/dashboard/metrics"
+        },
+        {
+          "title": "Google Analytics",
+          "url": "https://analytics.google.com/analytics/web/#/"
+        },
+        {
+          "title": "Google Webmaster Tools",
+          "url": "https://search.google.com/search-console"
+        },
+        {
+          "title": "Amazon Affiliates",
+          "url": "https://affiliate-program.amazon.com/home"
+        },
+        {
+          "title": "Adsense",
+          "url": "https://www.google.com/adsense/new/u/0/pub-3243030667692436/home"
+        },
+        {
+          "title": "The Stream Setup (Admin)",
+          "url": "https://thestreamsetup.com/wp-admin/"
+        },
+        {
+          "title": "The Stream Setup (Email",
+          "url": "https://webmailer.1and1.com/?Username=editor@thestreamsetup.com"
+        },
+        {
+          "title": "Facebook Advertising",
+          "url": "https://www.facebook.com/adsmanager/manage/campaigns?act=680565441959914&columns=name%2Cerrors%2Cdelivery%2Cresults%2Creach%2Cimpressions%2Ccost_per_result%2Cbudget%2Cspend%2Cend_time%2Cschedule%2Crelevance_score%3Ascore%2Cfrequency%2Cunique_actions%3Alink_click&attribution_windows=default"
+        },
+        {
+          "title": "PayPal",
+          "url": "https://www.paypal.com/"
+        }
+      ]
     }
   ]
 }
