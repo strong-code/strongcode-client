@@ -3,8 +3,13 @@ body {
 }
 
 #main {
-  margin-top: 8%;
+  padding-top: 6%;
   text-align: center;
+}
+
+#dateContainer {
+  float: right;
+  margin-right: 100px;
 }
 
 #search {

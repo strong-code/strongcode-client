@@ -1,6 +1,7 @@
 function init() {
   initPaste()
   initLinks()
+  initDate()
 }
 
 function initPaste() {
@@ -27,4 +28,18 @@ function initLinks() {
       })
     })
   })
+}
+
+function initDate() {
+  const months = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"]
+  
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
+  "Friday", "Saturday"]
+
+  let today = new Date()
+
+  let str = `<h3>${days[today.getDay()]}</h3><p>${months[today.getMonth()]} ${today.getDay()}, ${today.getFullYear()}`
+
+  $('#dateContainer').append(str)
 }
