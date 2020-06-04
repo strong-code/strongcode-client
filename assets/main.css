@@ -1,13 +1,51 @@
-.container {
-  margin-top: 10%;
+body {
+  background-color: #f3f3f3;
+}
+
+#main {
+  margin-top: 8%;
   text-align: center;
 }
 
 #search {
-  marging: 0 auto;
+  margin: 0 auto;
   text-align: center;
+  width: 500px;
 }
 
 #searchBar {
-  width: 500px;
+  margin-top: 25%;
 }
+
+#buttonContainer {
+  width: 100%;
+  padding-top: 15px;
+  margin-left: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.menu-item {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-container {
+  display: none;
+  position: absolute;
+  min-width: 200px;
+  left: -85px;
+  z-index: 1;
+  margin-top: 15px;
+}
+
+.dropdown-container a {
+  color: black;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-container:hover .dropdown-container { display: block; }
+
+.menu-item:hover .dropdown-container { display: block; }
