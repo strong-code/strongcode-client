@@ -3,13 +3,14 @@ body {
 }
 
 #main {
-  padding-top: 6%;
+  padding-top: 200px;
   text-align: center;
 }
 
 #dateContainer {
   float: right;
-  margin-right: 100px;
+  margin-right: 15px;
+  text-align: center;
 }
 
 #search {

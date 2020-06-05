@@ -39,7 +39,8 @@ function initDate() {
 
   let today = new Date()
 
-  let str = `<h3>${days[today.getDay()]}</h3><p>${months[today.getMonth()]} ${today.getDay()}, ${today.getFullYear()}`
+  let str = `<span id="dateTop">${days[today.getDay()]}</span><p>${months[today.getMonth()]} ${today.getDay()}, ${today.getFullYear()}`
 
   $('#dateContainer').append(str)
+  $('#dateTop').css('font-size', '3.5rem')
 }
