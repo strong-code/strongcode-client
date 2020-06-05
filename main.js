@@ -3,23 +3,26 @@ import './assets/js/jquery-3.5.1.min.js'
 $('body').ready(() => {
   initLinks()
   initDate()
-  darkMode()
 })
 
 $('#darkmodeToggle').click(() => {
-  if (document.documentElement.getAttribute('data-theme') === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'light')
+  const currentTheme = $('html').attr('data-theme')
+
+  // lights on
+  if (currentTheme === 'dark') {
+    $('.dark-theme').each((i, node) => {
+      $(node).removeClass('dark-theme')
+    })
+    $('html').attr('data-theme', 'light')
   } else {
-    document.documentElement.setAttribute('data-theme', 'dark')
+    // lights off
+    $('html').attr('data-theme', 'dark')
+    $('.menu-icon').each((i, node) => {
+      $(node).addClass('dark-theme')
+    })
+    $('#darkmodeToggle').addClass('dark-theme')
   }
 })
-
-function darkMode() {
-  $('.menu-icon').each((i, node) => {
-    $(node).addClass('dark-theme')
-  })
-  $('#darkmodeToggle').addClass('dark-theme')
-}
 
 function initPaste() {
   const c = $('.container')
