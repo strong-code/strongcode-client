@@ -1,8 +1,11 @@
-function init() {
-  initPaste()
+// Load basic stuff
+
+import './assets/js/jquery-3.5.1.min.js'
+
+$('body').ready(() => {
   initLinks()
   initDate()
-}
+})
 
 function initPaste() {
   const c = $('.container')
