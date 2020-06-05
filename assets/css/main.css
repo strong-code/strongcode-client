@@ -1,5 +1,26 @@
+:root {
+  --background-color: #f3f3f3;
+  --font-color: black;
+}
+
+[data-theme="dark"] {
+  --background-color: #555;
+  --font-color: #f3f3f3;
+}
+
+img.dark-theme {
+  -webkit-filter: invert(1);
+  filter: invert(1)
+}
+
+#darkmodeToggle {
+  cursor: pointer;
+  margin: 12 10 auto;
+}
+
 body {
-  background-color: #f3f3f3;
+  background-color: var(--background-color);
+  color: var(--font-color);
 }
 
 #main {
@@ -22,7 +43,7 @@ body {
 #searchBar {
   margin-top: 25%;
   text-align: center;
-  border: 1px solid #f3f3f3;
+  border: 1px solid var(--background-color);
 }
 
 #searchBar:focus {
@@ -54,7 +75,7 @@ body {
 }
 
 .dropdown-container a {
-  color: black;
+  color: var(--font-color);
   text-decoration: none;
   display: block;
   margin-top: 10px;

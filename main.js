@@ -1,11 +1,25 @@
-// Load basic stuff
-
 import './assets/js/jquery-3.5.1.min.js'
 
 $('body').ready(() => {
   initLinks()
   initDate()
+  darkMode()
 })
+
+$('#darkmodeToggle').click(() => {
+  if (document.documentElement.getAttribute('data-theme') === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'light')
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark')
+  }
+})
+
+function darkMode() {
+  $('.menu-icon').each((i, node) => {
+    $(node).addClass('dark-theme')
+  })
+  $('#darkmodeToggle').addClass('dark-theme')
+}
 
 function initPaste() {
   const c = $('.container')
