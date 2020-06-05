@@ -21,6 +21,12 @@ body {
 
 #searchBar {
   margin-top: 25%;
+  text-align: center;
+  border: 1px solid #f3f3f3;
+}
+
+#searchBar:focus {
+  outline: none;
 }
 
 #buttonContainer {
@@ -44,6 +50,7 @@ body {
   min-width: 200px;
   left: -80px;
   z-index: 1;
+  padding-top: 13px;
 }
 
 .dropdown-container a {
