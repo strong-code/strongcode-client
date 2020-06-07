@@ -1,0 +1,11 @@
+#!/bin/bash
+
+DEPLOY_DIR=/var/www/strongcode-client
+
+rm -rf $DEPLOY_DIR
+
+mkdir -p $DEPLOY_DIR 
+
+cp -r /dist $DEPLOY_DIR
+
+service nginx restart
