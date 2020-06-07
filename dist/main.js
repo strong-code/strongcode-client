@@ -2,6 +2,10 @@ import './assets/js/jquery-3.5.1.min.js'
 import { initSearch } from './assets/js/search.js'
 
 $('body').ready(() => {
+  if (window.location.hostname === 'localhost') {
+    $('#welcomeMsg').text('L O C A L H O S T')
+  }
+
   initLinks()
   initDate()
   initSearch()
@@ -61,7 +65,7 @@ function initDate() {
 
   let today = new Date()
 
-  let str = `<span id="dateTop">${days[today.getDay()]}</span><p>${months[today.getMonth()]} ${today.getDay()}, ${today.getFullYear()}`
+  let str = `<span id="dateTop">${days[today.getDay()]}</span><p>${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`
 
   $('#dateContainer').append(str)
   $('#dateTop').css('font-size', '3.5rem')
