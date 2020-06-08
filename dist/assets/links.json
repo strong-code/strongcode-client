@@ -62,12 +62,12 @@
           "url": "https://lobste.rs/"
         },
         {
-          "title": "DigitalOcean",
-          "url": "https://cloud.digitalocean.com/projects"
-        },
-        {
           "title": "GitHub",
           "url": "https://github.com/"
+        },
+        {
+          "title": "DigitalOcean",
+          "url": "https://cloud.digitalocean.com/projects"
         },
         {
           "title": "WebMshare",

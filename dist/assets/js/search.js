@@ -13,6 +13,7 @@ const searchSources = {
 
 function initSearch() {
   const searchBar = $('#searchBar')
+  searchBar.focus()
   let source = searchSources['!ddg'] // default
 
   searchBar.attr('placeholder', source[1])
@@ -22,7 +23,7 @@ function initSearch() {
       let chunk = searchBar.val().split(' ')[0]
       if (searchSources[chunk]) {
         source = searchSources[chunk]
-        searchBar.attr('placeholder', source[1]).val('').blur()
+        searchBar.attr('placeholder', source[1]).val('').blur().focus()
       }
     }
 
