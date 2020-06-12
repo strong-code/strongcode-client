@@ -38,13 +38,31 @@ function initPaste() {
   c.pastableNonInputable()
   
   c.on('pasteImage', (ev, data) => {
-    console.log(data.blob)
+    let fd = new FormData()
+    fd.append('file', data.blob, 'i.png')
+    uploadPaste(fd)
   })
   .on('pasteText', (ev, data) => {
-    $.post(API_URL, {text: data.text}, (res) => {
-      console.log('File uploaded to: ' + res.path)
-      navigator.clipboard.writeText(res.path)
-    })
+    let fd = new FormData()
+    fd.append('text', data.text)
+    uploadPaste(fd)
+  })
+}
+
+function uploadPaste(payload) {
+  $.ajax({
+    type: 'POST',
+    url: API_URL,
+    data: payload,
+    processData: false,
+    contentType: false
+  })
+  .done(res => {
+    console.log('File uploaded to: ' + res.path)
+    navigator.clipboard.writeText(res.path)
+  })
+  .fail(err => {
+    console.log(err)
   })
 }
 
