@@ -1,5 +1,7 @@
 import './assets/js/jquery-3.5.1.min.js'
+import './assets/js/paste.js'
 import { initSearch } from './assets/js/search.js'
+const API_URL = `${window.location.origin}/api/paste`
 
 $('body').ready(() => {
   if (window.location.hostname === 'localhost') {
@@ -8,6 +10,7 @@ $('body').ready(() => {
 
   initLinks()
   initDate()
+  initPaste()
   initSearch()
 })
 
@@ -38,7 +41,10 @@ function initPaste() {
     console.log(data.blob)
   })
   .on('pasteText', (ev, data) => {
-    console.log(data.text)
+    $.post(API_URL, {text: data.text}, (res) => {
+      console.log('File uploaded to: ' + res.path)
+      navigator.clipboard.writeText(res.path)
+    })
   })
 }
 
