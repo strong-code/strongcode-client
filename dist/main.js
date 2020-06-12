@@ -1,10 +1,11 @@
 import './assets/js/jquery-3.5.1.min.js'
 import './assets/js/paste.js'
 import { initSearch } from './assets/js/search.js'
-const API_URL = `${window.location.origin}/api/paste`
+let API_URL = 'http://strongco.de/api/paste'
 
 $('body').ready(() => {
   if (window.location.hostname === 'localhost') {
+    API_URL = `${window.location.origin}/api/paste`
     $('#welcomeMsg').text('L O C A L H O S T')
   }
 
