@@ -9,3 +9,4 @@ Be sure to explicitly match `http://localhost:8080` in all frontend calls
 - notes via db not localstorage
 - keyboard commands
 - save darkmode setting as cookie
+- API status on startpage
