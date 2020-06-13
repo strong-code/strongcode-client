@@ -1,18 +1,22 @@
 import './assets/js/jquery-3.5.1.min.js'
 import './assets/js/paste.js'
 import { initSearch } from './assets/js/search.js'
-let API_URL = 'http://strongco.de/api/paste'
+let API_URL = 'http://strongco.de/api'
 
 $('body').ready(() => {
   if (window.location.hostname === 'localhost') {
-    API_URL = `${window.location.origin}/api/paste`
+    API_URL = `${window.location.origin}/api`
     $('#welcomeMsg').text('L O C A L H O S T')
   }
 
   initLinks()
-  initDate()
   initPaste()
   initSearch()
+  initHealth()
+})
+
+$('.header-container').ready(() => {
+  initDate()
 })
 
 $('#darkmodeToggle').click(() => {
@@ -34,6 +38,22 @@ $('#darkmodeToggle').click(() => {
   }
 })
 
+function initHealth() {
+  let stat = $('#apiStatus')
+
+  $.get(API_URL + '/health')
+  .done(res => {
+    stat.text('API is online').css('color', '').css('font-weight', '')
+  })
+  .fail(e => {
+    stat.text('API is offline').css('color', 'red').css('font-weight', 'bold')
+  })
+
+  stat.click(() => {
+    initHealth()
+  })
+}
+
 function initPaste() {
   const c = $('.container')
   c.pastableNonInputable()
@@ -53,7 +73,7 @@ function initPaste() {
 function uploadPaste(payload) {
   $.ajax({
     type: 'POST',
-    url: API_URL,
+    url: API_URL + '/paste',
     data: payload,
     processData: false,
     contentType: false
