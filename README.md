@@ -10,3 +10,4 @@ Be sure to explicitly match `http://localhost:8080` in all frontend calls
 - keyboard commands
 - save darkmode setting as localstorage
 - allow rehosting of image if img url is pasted
+- robust logging and init script for server 
