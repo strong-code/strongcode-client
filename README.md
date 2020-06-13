@@ -8,5 +8,5 @@ Be sure to explicitly match `http://localhost:8080` in all frontend calls
 - css animations on submenu and search
 - notes via db not localstorage
 - keyboard commands
-- save darkmode setting as cookie
-- API status on startpage
+- save darkmode setting as localstorage
+- allow rehosting of image if img url is pasted
