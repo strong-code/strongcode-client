@@ -43,7 +43,7 @@ function initHealth() {
 
   $.get(API_URL + '/health')
   .done(res => {
-    stat.text('API is online').css('color', '').css('font-weight', '')
+    stat.text('')
   })
   .fail(e => {
     stat.text('API is offline').css('color', 'red').css('font-weight', 'bold')
