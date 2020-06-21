@@ -11,3 +11,4 @@ Be sure to explicitly match `http://localhost:8080` in all frontend calls
 - save darkmode setting as localstorage
 - robust logging and init script for server 
 - show size of `d/` folder next to API health check
+- sqlite backend
