@@ -80,7 +80,9 @@ function uploadPaste(payload) {
   })
   .done(res => {
     console.log('File uploaded to: ' + res.path)
-    navigator.clipboard.writeText(res.path)
+    $('#welcomeMsg').html(`<a href="${res.path}">${res.path}</a>`)
+    // TODO: set up SSL for clipboard access
+    //navigator.clipboard.writeText(res.path)
   })
   .fail(err => {
     console.log(err)
