@@ -8,7 +8,8 @@ const searchSources = {
   "!ddg":      ["https://duckduckgo.com/?q={Q}",                          "DuckDuckGo"],
   "!gr":       ["https://goodreads.com/search?q={Q}",                     "GoodReads"],
   "!d":        ["https://www.dictionary.com/browse/{Q}",                  "Dictionary"],
-  "!last":     ["https://www.last.fm/search?q={Q}",                       "Last.fm"]
+  "!last":     ["https://www.last.fm/search?q={Q}",                       "Last.fm"],
+  "!r":        ["https://duckduckgo.com/?q=reddit+{Q}",                   "Reddit"]
 }
 
 function initSearch() {
