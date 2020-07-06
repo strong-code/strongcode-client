@@ -15,6 +15,7 @@ const searchSources = {
 
 function initSearch() {
   const searchBar = $('#searchBar')
+  const welcomeMsg = $('#welcomeMsg')
   searchBar.focus()
   let source = searchSources['!ddg'] // default
 
@@ -25,6 +26,7 @@ function initSearch() {
       let chunk = searchBar.val().split(' ')[0]
       if (searchSources[chunk]) {
         source = searchSources[chunk]
+        welcomeMsg.text(`searching with ${source[1].toLowerCase()}`)
         searchBar.attr('placeholder', source[1]).val('').blur().focus()
       }
     }
