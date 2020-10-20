@@ -16,6 +16,14 @@
           "url": "https://azm.to/"
         },
         {
+          "title": "Pluto TV",
+          "url": "https://pluto.tv/live-tv"
+        },
+        {
+          "title": "Trees Network",
+          "url": "https://www.treesnetwork.com/"
+        },
+        {
           "title": "LibGen",
           "url": "https://libgen.is"
         },
@@ -114,6 +122,10 @@
         {
           "title": "GoodReads",
           "url": "https://goodreads.com/"
+        },
+        {
+          "title": "Last.fm",
+          "url": "https://last.fm/"
         },
         {
           "title": "LiveCoinWatch",
