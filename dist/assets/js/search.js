@@ -1,5 +1,5 @@
 const searchSources = {
-  "!g":        ["https://www.google.com/#q={Q}",                          "Google"],
+  "!g":        ["https://www.google.com/search?&q={Q}",                   "Google"],
   "!im":       ["https://www.google.com/search?tbm=isch&q={Q}",           "Google Images"],
   "!imdb":     ["http://www.imdb.com/find?q={Q}",                         "IMDB"],
   "!ud":       ["http://www.urbandictionary.com/define.php?term={Q}",     "Urban Dictionary"],
