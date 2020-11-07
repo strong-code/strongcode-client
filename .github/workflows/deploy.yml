@@ -1,13 +1,18 @@
-name: Deploy
+name: Deploy front-end client
 
 on: [push]
 
 jobs: 
-  deploy: 
+  build-and-deploy: 
     if: github.ref == 'refs/heads/master'
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
+      - name: Set short hash
+        id: vars
+        run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
+      - name: Save build info locally
+        run: 'echo "{\"sha\": \"${{ steps.vars.outputs.sha }}\", \"message\": \"${{ github.event.head_commit.message }}\"}" > ./dist/assets/build.json'
       - name: Deploy to server
         uses: appleboy/ssh-action@master
         with: 

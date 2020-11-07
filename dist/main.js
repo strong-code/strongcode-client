@@ -13,6 +13,7 @@ $('body').ready(() => {
   initPaste()
   initSearch()
   initHealth()
+  initBuildInfo()
 })
 
 $('.header-container').ready(() => {
@@ -112,8 +113,16 @@ function initDate() {
 
   let today = new Date()
 
-  let str = `<span id="dateTop">${days[today.getDay()]}</span><p>${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`
+  let str = `<span id="dateTop">${days[today.getDay()]}</span><br>${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`
 
   $('#dateContainer').append(str)
   $('#dateTop').css('font-size', '3.5rem')
+}
+
+function initBuildInfo() {
+  fetch('./assets/build.json')
+    .then(res => res.json())
+    .then(build => {
+      $('#dateContainer').append(`<span id="build" title="${build.message}"><br>build ${build.sha}</span>`)
+    })
 }
