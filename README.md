@@ -1,6 +1,7 @@
 # running locally
-Easiest way is to run nginx on 8080 then proxy to frontend and backend appropriately.
-Be sure to explicitly match `http://localhost:8080` in all frontend calls
+
+  $ ruby -run -e httpd dist/ -p 3001
+
 
 # TODO
 - weather widget
