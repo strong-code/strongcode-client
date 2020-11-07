@@ -7,17 +7,21 @@ jobs:
     if: github.ref == 'refs/heads/master'
     runs-on: [ubuntu-latest]
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout latest master
+        uses: actions/checkout@v2
       - name: Set short hash
         id: vars
         run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
-      - name: Save build info locally
-        run: 'echo "{\"sha\": \"${{ steps.vars.outputs.sha }}\", \"message\": \"${{ github.event.head_commit.message }}\"}" > ./dist/assets/build.json'
-      - name: Deploy to server
+      - name: Deploy to server with build info
         uses: appleboy/ssh-action@master
         with: 
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
-          script: cd ${{ secrets.REPO_DIR }} && git pull && cp -r dist/* ${{ secrets.DEPLOY_DIR }} 
+          script: |
+            cd ${{ secrets.REPO_DIR }}
+            git pull
+            cp -r dist/* ${{ secrets.DEPLOY_DIR }} 
+            cd ${{ secrets.DEPLOY_DIR }}
+            echo "{\"sha\": \"${{ steps.vars.outputs.sha }}\", \"message\": \"${{ github.event.head_commit.message }}\"}" > ./assets/build.json
