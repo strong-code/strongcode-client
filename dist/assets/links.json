@@ -86,6 +86,10 @@
           "url": "https://cloud.digitalocean.com/projects"
         },
         {
+          "title": "PiHole",
+          "url": "http://pi.hole/admin/index.php"
+        },
+        {
           "title": "Whats My DNS",
           "url": "https://www.whatsmydns.net/"
         }
