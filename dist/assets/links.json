@@ -87,7 +87,7 @@
         },
         {
           "title": "PiHole",
-          "url": "http://pi.hole/admin/index.php"
+          "url": "http://raspberrypi/admin/index.php"
         },
         {
           "title": "Whats My DNS",
