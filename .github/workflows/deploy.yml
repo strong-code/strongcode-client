@@ -22,6 +22,4 @@ jobs:
           script: |
             cd ${{ secrets.REPO_DIR }}
             git pull
-            cp -r dist/* ${{ secrets.DEPLOY_DIR }} 
-            cd ${{ secrets.DEPLOY_DIR }}
             echo "{\"sha\": \"${{ steps.vars.outputs.sha }}\", \"message\": \"${{ github.event.head_commit.message }}\"}" > ./assets/build.json
