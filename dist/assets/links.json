@@ -90,6 +90,10 @@
           "url": "http://pi.hole/admin/index.php"
         },
         {
+          "title": "Dashboard",
+          "url": "http://health.strongco.de"
+        },
+        {
           "title": "Whats My DNS",
           "url": "https://www.whatsmydns.net/"
         }
