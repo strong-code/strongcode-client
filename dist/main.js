@@ -42,7 +42,11 @@ $('#darkmodeToggle').click(() => {
 })
 
 function initGallery() {
+
   $('body').keypress(ev => {
+    if ($('#searchBar').is(':focus')) 
+      return
+
     if (ev.key === 'g') {
       $('#gallery').toggle()
       createPasteList()
