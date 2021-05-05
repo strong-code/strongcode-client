@@ -2,3 +2,4 @@
 package-lock.json
 dist/strongcode.js
 *.swp
+dist/gallery.json

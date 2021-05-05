@@ -2,6 +2,7 @@ import './assets/js/jquery-3.5.1.min.js'
 import './assets/js/paste.js'
 import { initSearch } from './assets/js/search.js'
 let API_URL = 'http://strongco.de/api'
+const PASTE_URL = 'http://strongco.de/d'
 
 $('body').ready(() => {
   if (window.location.hostname === 'localhost') {
@@ -14,6 +15,7 @@ $('body').ready(() => {
   initSearch()
   initHealth()
   initBuildInfo()
+  initGallery()
 })
 
 $('.header-container').ready(() => {
@@ -38,6 +40,26 @@ $('#darkmodeToggle').click(() => {
     $('#darkmodeToggle').addClass('dark-theme')
   }
 })
+
+function initGallery() {
+  $('body').keypress(ev => {
+    if (ev.key === 'g') {
+      $('#gallery').toggle()
+      createPasteList()
+    }
+  })
+}
+
+function createPasteList() {
+  $('#paste-list').empty()
+  $.get(API_URL + '/pastes')
+  .done(res => {
+    res.pastes.forEach(paste => {
+      let p = `<li><a href=${PASTE_URL}/${paste}>${paste}</a></li>`
+      $('#paste-list').append(p)
+    })
+  })
+}
 
 function initHealth() {
   let stat = $('#apiStatus')
