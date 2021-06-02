@@ -20,6 +20,10 @@
           "url": "https://pluto.tv/live-tv"
         },
         {
+          "title": "StreamEast",
+          "url": "https://www.streameast.live"
+        },
+        {
           "title": "Trees Network",
           "url": "https://www.treesnetwork.com/"
         },
@@ -102,10 +106,6 @@
     {
       "title": "gaming",
       "links": [
-        {
-          "title": "Crackwatch",
-          "url": "https://crackwatch.com/"
-        },
         {
           "title": "Steam",
           "url": "https://store.steampowered.com/"
