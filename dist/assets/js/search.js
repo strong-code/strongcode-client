@@ -1,5 +1,6 @@
 const searchSources = {
   "!g":        ["https://www.google.com/search?&q={Q}",                   "Google"],
+  "!b":        ["https://search.brave.com/search?q={Q}",                  "Brave"],
   "!im":       ["https://www.google.com/search?tbm=isch&q={Q}",           "Google Images"],
   "!imdb":     ["http://www.imdb.com/find?q={Q}",                         "IMDB"],
   "!ud":       ["http://www.urbandictionary.com/define.php?term={Q}",     "Urban Dictionary"],
@@ -17,7 +18,7 @@ function initSearch() {
   const searchBar = $('#searchBar')
   const welcomeMsg = $('#welcomeMsg')
   searchBar.focus()
-  let source = searchSources['!ddg'] // default
+  let source = searchSources['!b'] // default
 
   searchBar.attr('placeholder', source[1])
 
