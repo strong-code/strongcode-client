@@ -149,7 +149,7 @@ function initDate() {
 function initWeather() {
   let weather = $('#weather')
 
-  $.get('https://wttr.in/@strongco.de?format=3')
+  $.get('https://wttr.in/?format=3')
   .done(res => {
     weather.text(res.replace('+', ''))
   })
