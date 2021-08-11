@@ -16,6 +16,7 @@ $('body').ready(() => {
   initHealth()
   initBuildInfo()
   initGallery()
+  initWeather()
 })
 
 $('.header-container').ready(() => {
@@ -143,6 +144,18 @@ function initDate() {
 
   $('#dateContainer').append(str)
   $('#dateTop').css('font-size', '3.5rem')
+}
+
+function initWeather() {
+  let weather = $('#weather')
+
+  $.get('https://wttr.in/@strongco.de?format=3')
+  .done(res => {
+    weather.text(res.replace('+', ''))
+  })
+  .fail(e => {
+    weather.text('Weather unavailable')
+  })
 }
 
 function initBuildInfo() {

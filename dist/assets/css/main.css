@@ -61,10 +61,6 @@ body {
   align-items: baseline;
 }
 
-/*
- RIGHT SIDE SPANS
-*/
-
 .right-span {
   float: right;
   margin-right: 15px;
