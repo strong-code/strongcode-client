@@ -36,6 +36,10 @@ body {
   text-align: center;
 }
 
+#weather {
+  height: 24px;
+}
+
 #search {
   margin: 0 auto;
   text-align: center;
