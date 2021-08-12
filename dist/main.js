@@ -17,6 +17,7 @@ $('body').ready(() => {
   initBuildInfo()
   initGallery()
   initWeather()
+  initDarkmode()
 })
 
 $('.header-container').ready(() => {
@@ -25,6 +26,8 @@ $('.header-container').ready(() => {
 
 $('#darkmodeToggle').click(() => {
   const currentTheme = $('html').attr('data-theme')
+  const date = new Date()
+  date.setTime(date.getTime() + (10 * 365 * 24 * 60 * 60))
 
   // lights on
   if (currentTheme === 'dark') {
@@ -32,6 +35,7 @@ $('#darkmodeToggle').click(() => {
       $(node).removeClass('dark-theme')
     })
     $('html').attr('data-theme', 'light')
+    document.cookie = `darkmode=off; expires=${date.toGMTString()}; path=/` 
   } else {
     // lights off
     $('html').attr('data-theme', 'dark')
@@ -39,8 +43,19 @@ $('#darkmodeToggle').click(() => {
       $(node).addClass('dark-theme')
     })
     $('#darkmodeToggle').addClass('dark-theme')
+    document.cookie = `darkmode=on; expires=${date.toGMTString()}; path=/` 
   }
 })
+
+function initDarkmode() {
+  if (document.cookie === 'darkmode=on') {
+    $('html').attr('data-theme', 'dark')
+    $('.menu-icon').each((i, node) => {
+      $(node).addClass('dark-theme')
+    })
+    $('#darkmodeToggle').addClass('dark-theme')
+  }
+}
 
 function initGallery() {
 
@@ -165,3 +180,4 @@ function initBuildInfo() {
       $('#dateContainer').append(`<span id="build" title="${build.message}"><br>build ${build.sha}</span>`)
     })
 }
+
