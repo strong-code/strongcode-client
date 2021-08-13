@@ -3,13 +3,13 @@
 */
 
 :root {
-  --background-color: #f3f3f3;
-  --font-color: black;
+  --background-color: #e5e9f0;
+  --font-color: #2e3440;
 }
 
 [data-theme="dark"] {
-  --background-color: #555;
-  --font-color: #f3f3f3;
+  --background-color: #2e3440;
+  --font-color: #d8dee9;
 }
 
 img.dark-theme {
