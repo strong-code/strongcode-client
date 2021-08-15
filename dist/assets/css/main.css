@@ -81,6 +81,14 @@ body {
   list-style-type: none;
 }
 
+#footer {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 25px;
+  margin-left: 10px;
+  display: none;
+}
+
 /*
   SUBMENU ITEMS
 */

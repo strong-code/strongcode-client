@@ -15,7 +15,7 @@ $('body').ready(() => {
   initSearch()
   initHealth()
   initBuildInfo()
-  initGallery()
+  initKeyHandlers()
   initWeather()
   initDarkmode()
 })
@@ -57,15 +57,19 @@ function initDarkmode() {
   }
 }
 
-function initGallery() {
-
+function initKeyHandlers() {
   $('body').keypress(ev => {
     if ($('#searchBar').is(':focus')) 
       return
 
-    if (ev.key === 'g') {
-      $('#gallery').toggle()
-      createPasteList()
+    switch (ev.key) {
+      case 'g':
+        $('#gallery').toggle()
+        createPasteList()
+        break
+      case '?':
+        $('#footer').toggle()
+        break
     }
   })
 }
@@ -87,6 +91,7 @@ function initHealth() {
   $.get(API_URL + '/health')
   .done(res => {
     stat.text('')
+    $('#footer').text(`Paste directory size: ${res.folderSize}`)
   })
   .fail(e => {
     stat.text('API is offline').css('color', 'red').css('font-weight', 'bold')
