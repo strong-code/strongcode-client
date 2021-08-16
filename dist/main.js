@@ -39,7 +39,7 @@ $('#darkmodeToggle').click(() => {
   } else {
     // lights off
     $('html').attr('data-theme', 'dark')
-    $('.menu-icon').each((i, node) => {
+    $('.icon').each((i, node) => {
       $(node).addClass('dark-theme')
     })
     $('#darkmodeToggle').addClass('dark-theme')
@@ -50,7 +50,7 @@ $('#darkmodeToggle').click(() => {
 function initDarkmode() {
   if (document.cookie === 'darkmode=on') {
     $('html').attr('data-theme', 'dark')
-    $('.menu-icon').each((i, node) => {
+    $('.icon').each((i, node) => {
       $(node).addClass('dark-theme')
     })
     $('#darkmodeToggle').addClass('dark-theme')
@@ -76,10 +76,11 @@ function initKeyHandlers() {
 
 function createPasteList() {
   $('#paste-list').empty()
+
   $.get(API_URL + '/pastes')
   .done(res => {
     res.pastes.forEach(paste => {
-      let p = `<li><a href=${PASTE_URL}/${paste}>${paste}</a></li>`
+      let p = `<li><img src="assets/icons/garbage.png" class="icon paste-icon"><a href=${PASTE_URL}/${paste}>${paste}</a></img></li>`
       $('#paste-list').append(p)
     })
   })

@@ -70,17 +70,6 @@ body {
   margin-right: 15px;
 }
 
-#gallery {
-  margin-top: 25px;
-  clear: right;
-  display: none;
-}
-
-#paste-list {
-  margin-right: 45px;
-  list-style-type: none;
-}
-
 #footer {
   position: absolute;
   bottom: 0;
@@ -121,4 +110,28 @@ body {
 
 .menu-item:hover .dropdown-container {
   display: block; 
+}
+
+/*
+ PASTE GALLERY ITEMS
+*/
+
+#gallery {
+  margin-top: 25px;
+  clear: right;
+  display: none;
+}
+
+#paste-list {
+  margin-right: 45px;
+  list-style-type: none;
+}
+
+.paste-icon {
+  color: var(--font-color);
+  height: 12px;
+  cursor: pointer;
+  margin-right: 7px;
+  position: relative;
+  top: 2px;
 }
