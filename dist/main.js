@@ -75,6 +75,7 @@ function initKeyHandlers() {
 }
 
 function createPasteList() {
+  const currentTheme = $('html').attr('data-theme')
   $('#paste-list').empty()
 
   $.get(API_URL + '/pastes')
@@ -83,6 +84,10 @@ function createPasteList() {
       let p = `<li><img src="assets/icons/garbage.png" class="icon paste-icon"><a href=${PASTE_URL}/${paste}>${paste}</a></img></li>`
       $('#paste-list').append(p)
     })
+
+    if (currentTheme === 'dark') {
+      $('.paste-icon').addClass('dark-theme')
+    }
   })
 }
 
