@@ -81,9 +81,25 @@ function createPasteList() {
   $.get(API_URL + '/pastes')
   .done(res => {
     res.pastes.forEach(paste => {
-      let p = `<li><img src="assets/icons/garbage.png" class="icon paste-icon"><a href=${PASTE_URL}/${paste}>${paste}</a></img></li>`
-      $('#paste-list').append(p)
-    })
+      let icon = $('<img>').attr({'src': 'assets/icons/garbage.png', 'class': 'icon paste-icon'}).click(() => {
+        $.ajax({
+          type: 'DELETE',
+          url: `${API_URL}/paste/${paste.substr(0,6)}`
+        })
+        .done(res => {
+          console.log(`Deleted paste ${paste}`)
+          $(icon.parent()[0]).remove()
+        })
+        .fail(e => {
+          console.log(e)
+        })
+      })
+     
+      $('#paste-list').append(
+        $('<li>').append([
+          icon,
+          $('<a>').attr('href', `${PASTE_URL}/${paste}`).text(paste)
+      ]))
 
     if (currentTheme === 'dark') {
       $('.paste-icon').addClass('dark-theme')
