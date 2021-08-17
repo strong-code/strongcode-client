@@ -120,6 +120,7 @@ body {
   margin-top: 25px;
   clear: right;
   display: none;
+  margin-right: -10px;
 }
 
 #paste-list {
