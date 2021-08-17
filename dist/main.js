@@ -99,7 +99,8 @@ function createPasteList() {
         $('<li>').append([
           icon,
           $('<a>').attr('href', `${PASTE_URL}/${paste}`).text(paste)
-      ]))
+        ]))
+    })
 
     if (currentTheme === 'dark') {
       $('.paste-icon').addClass('dark-theme')
