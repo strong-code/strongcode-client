@@ -183,10 +183,10 @@ function initDate() {
 
   let today = new Date()
 
-  let str = `<span id="dateTop">${days[today.getDay()]}</span><br>${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`
-
-  $('#dateContainer').append(str)
-  $('#dateTop').css('font-size', '3.5rem')
+  $('#dateTop')
+    .text(days[today.getDay()])
+    .css('font-size', '3.5rem')
+    .after(`<br>${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`)
 }
 
 function initWeather() {
@@ -205,7 +205,9 @@ function initBuildInfo() {
   fetch('./assets/build.json')
     .then(res => res.json())
     .then(build => {
-      $('#dateContainer').append(`<span id="build" title="${build.message}"><br>build ${build.sha}</span>`)
+      $('#build')
+        .attr({'title': build.message})
+        .append(`<br>build ${build.sha}`)
     })
 }
 

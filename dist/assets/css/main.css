@@ -70,6 +70,10 @@ body {
   margin-right: 15px;
 }
 
+#dateTop {
+  margin-left: -5px;
+}
+
 #footer {
   position: absolute;
   bottom: 0;
@@ -117,14 +121,10 @@ body {
 */
 
 #gallery {
-  margin-top: 25px;
-  clear: right;
   display: none;
-  margin-right: -10px;
 }
 
 #paste-list {
-  margin-right: 45px;
   list-style-type: none;
 }
 
