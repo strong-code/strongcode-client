@@ -90,6 +90,10 @@
           "url": "https://cloud.digitalocean.com/projects"
         },
         {
+          "title": "r/DevOps",
+          "url": "https://old.reddit.com/r/devops/"
+        },
+        {
           "title": "PiHole",
           "url": "http://pi.hole/admin/index.php"
         },
