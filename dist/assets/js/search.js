@@ -11,7 +11,8 @@ const searchSources = {
   "!d":        ["https://www.dictionary.com/browse/{Q}",                  "Dictionary"],
   "!last":     ["https://www.last.fm/search?q={Q}",                       "Last.fm"],
   "!r":        ["https://duckduckgo.com/?q=reddit+{Q}",                   "Reddit"],
-  "!a":        ["https://smile.amazon.com/s?k={Q}",                       "Amazon"]
+  "!a":        ["https://smile.amazon.com/s?k={Q}",                       "Amazon"],
+  "$":         ["https://finance.yahoo.com/quote/{Q}",                    "Yahoo Finance"]
 }
 
 function initSearch() {
@@ -22,7 +23,7 @@ function initSearch() {
 
   searchBar.attr('placeholder', source[1])
 
-  searchBar.on('keydown', e => {
+  searchBar.on('keyup', e => {
     if (e.key === ' ') {
       let chunk = searchBar.val().split(' ')[0]
       if (searchSources[chunk]) {
@@ -33,7 +34,7 @@ function initSearch() {
     }
 
     if (e.key === 'Enter') {
-      window.location  = source[0].replace("{Q}", encodeURIComponent(searchBar.val().trim()))
+      window.location = source[0].replace("{Q}", encodeURIComponent(searchBar.val().trim()))
     }
   })
 }
