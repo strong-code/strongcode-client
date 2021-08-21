@@ -24,13 +24,15 @@ $('.header-container').ready(() => {
   initDate()
 })
 
-$('#darkmodeToggle').click(() => {
+$('#darkmodeToggle').click((el) => {
+  // $(el.currentTarget).attr('src', 'assets/icons/lightmode.png')
   const currentTheme = $('html').attr('data-theme')
   const date = new Date()
   date.setTime(date.getTime() + (10 * 365 * 24 * 60 * 60))
 
   // lights on
   if (currentTheme === 'dark') {
+    $('#darkmodeToggle').attr('src', 'assets/icons/darkmode.png')
     $('.dark-theme').each((i, node) => {
       $(node).removeClass('dark-theme')
     })
@@ -38,6 +40,7 @@ $('#darkmodeToggle').click(() => {
     document.cookie = `darkmode=off; expires=${date.toGMTString()}; path=/` 
   } else {
     // lights off
+    $('#darkmodeToggle').attr('src', 'assets/icons/lightmode.png')
     $('html').attr('data-theme', 'dark')
     $('.icon').each((i, node) => {
       $(node).addClass('dark-theme')
@@ -53,7 +56,7 @@ function initDarkmode() {
     $('.icon').each((i, node) => {
       $(node).addClass('dark-theme')
     })
-    $('#darkmodeToggle').addClass('dark-theme')
+    $('#darkmodeToggle').addClass('dark-theme').attr('src', 'assets/icons/lightmode.png')
   }
 }
 
