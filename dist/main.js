@@ -1,12 +1,10 @@
 import './assets/js/jquery-3.5.1.min.js'
 import './assets/js/paste.js'
 import { initSearch } from './assets/js/search.js'
-let API_URL = 'http://strongco.de/api'
-const PASTE_URL = 'http://strongco.de/d'
+const HOST = 'http://' + (window.location.hostname === 'localhost' ? 'localhost:3000' : 'strongco.de')
 
 $('body').ready(() => {
   if (window.location.hostname === 'localhost') {
-    API_URL = `${window.location.origin}/api`
     $('#welcomeMsg').text('L O C A L H O S T')
   }
 
@@ -25,7 +23,6 @@ $('.header-container').ready(() => {
 })
 
 $('#darkmodeToggle').click((el) => {
-  // $(el.currentTarget).attr('src', 'assets/icons/lightmode.png')
   const currentTheme = $('html').attr('data-theme')
   const date = new Date()
   date.setTime(date.getTime() + (10 * 365 * 24 * 60 * 60))
@@ -81,13 +78,13 @@ function createPasteList() {
   const currentTheme = $('html').attr('data-theme')
   $('#paste-list').empty()
 
-  $.get(API_URL + '/pastes')
+  $.get(HOST + '/api/pastes')
   .done(res => {
     res.pastes.forEach(paste => {
       let icon = $('<img>').attr({'src': 'assets/icons/garbage.png', 'class': 'icon paste-icon'}).click(() => {
         $.ajax({
           type: 'DELETE',
-          url: `${API_URL}/paste/${paste.substr(0,6)}`
+          url: `${HOST}/api/paste/${paste.substr(0,6)}`
         })
         .done(res => {
           console.log(`Deleted paste ${paste}`)
@@ -101,7 +98,7 @@ function createPasteList() {
       $('#paste-list').append(
         $('<li>').append([
           icon,
-          $('<a>').attr('href', `${PASTE_URL}/${paste}`).text(paste)
+          $('<a>').attr('href', `${HOST}/d/${paste}`).text(paste)
         ]))
     })
 
@@ -114,10 +111,12 @@ function createPasteList() {
 function initHealth() {
   let stat = $('#apiStatus')
 
-  $.get(API_URL + '/health')
+  $.get(HOST + '/api/health')
   .done(res => {
     stat.text('')
-    $('#footer').text(`Paste directory size: ${res.folderSize}`)
+    $('#footer')
+      .append(`Paste directory size: ${res.folderSize}`)
+      .append(`<p>Total pastes: ${res.totalPastes}`)
   })
   .fail(e => {
     stat.text('API is offline').css('color', 'red').css('font-weight', 'bold')
@@ -147,7 +146,7 @@ function initPaste() {
 function uploadPaste(payload) {
   $.ajax({
     type: 'POST',
-    url: API_URL + '/paste',
+    url: HOST + '/api/paste',
     data: payload,
     processData: false,
     contentType: false
