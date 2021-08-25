@@ -128,6 +128,7 @@ function initHealth() {
 }
 
 function initPaste() {
+  const url = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
   const c = $('.container')
   c.pastableNonInputable()
   
@@ -137,9 +138,27 @@ function initPaste() {
     uploadPaste(fd)
   })
   .on('pasteText', (ev, data) => {
-    let fd = new FormData()
-    fd.append('text', data.text)
-    uploadPaste(fd)
+    if (url.test(data.text)) {
+      shortenUrl(data.text)
+    } else {
+      let fd = new FormData()
+      fd.append('text', data.text)
+      uploadPaste(fd)
+    }
+  })
+}
+
+function shortenUrl(url) {
+  $.ajax({
+    type: 'POST',
+    url: HOST + '/api/shorten',
+    data: {url: url}
+  })
+  .done(res => {
+    $('#welcomeMsg').html(`<a href="${res.url}">${res.url}</a>`)
+  })
+  .fail(err => {
+    console.log(err)
   })
 }
 
