@@ -129,6 +129,7 @@ function initHealth() {
 
 function initPaste() {
   const url = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+  const img = /^.*\.(jpg|jpeg|gif|png|webm)$/
   const c = $('.container')
   c.pastableNonInputable()
   
@@ -138,7 +139,7 @@ function initPaste() {
     uploadPaste(fd)
   })
   .on('pasteText', (ev, data) => {
-    if (url.test(data.text)) {
+    if (!img.test(data.text) && url.test(data.text)) {
       shortenUrl(data.text)
     } else {
       let fd = new FormData()
