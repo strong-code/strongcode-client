@@ -1,7 +1,7 @@
 import './assets/js/jquery-3.5.1.min.js'
 import './assets/js/paste.js'
 import { initSearch } from './assets/js/search.js'
-const HOST = 'http://' + (window.location.hostname === 'localhost' ? 'localhost:3000' : 'strongco.de')
+const HOST = (window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://strongco.de')
 
 $('body').ready(() => {
   if (window.location.hostname === 'localhost') {
@@ -174,8 +174,7 @@ function uploadPaste(payload) {
   .done(res => {
     console.log('File uploaded to: ' + res.path)
     $('#welcomeMsg').html(`<a href="${res.path}">${res.path}</a>`)
-    // TODO: set up SSL for clipboard access
-    //navigator.clipboard.writeText(res.path)
+    navigator.clipboard.writeText(res.path)
   })
   .fail(err => {
     console.log(err)
