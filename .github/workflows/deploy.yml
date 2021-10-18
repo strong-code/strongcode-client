@@ -14,7 +14,7 @@ jobs:
         run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
       - name: Create build info
         run: |
-          echo "{\"sha\": \"${{ steps.vars.outputs.sha }}\", \"message\": \"${{ github.event.head_commit.message }}\"}" > ./assets/build.json
+          echo "{\"sha\": \"${{ steps.vars.outputs.sha }}\", \"message\": \"${{ github.event.head_commit.message }}\"}" > ${{ secrets.REPO_DIR }}/dist/assets/build.json
       - name: Pull latest changes
         run: |
           cd ${{ secrets.REPO_DIR }}
