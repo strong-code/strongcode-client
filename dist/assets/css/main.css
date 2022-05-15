@@ -136,3 +136,12 @@ body {
   position: relative;
   top: 2px;
 }
+
+.popup {
+  position: absolute;
+}
+
+.popup img{
+  max-width: 240px;
+  height: auto;
+}
