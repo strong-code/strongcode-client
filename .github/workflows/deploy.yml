@@ -17,5 +17,6 @@ jobs:
           echo "{\"sha\": \"${{ steps.vars.outputs.sha }}\", \"message\": \"${{ github.event.head_commit.message }}\"}" > ${{ secrets.REPO_DIR }}/dist/assets/build.json
       - name: Pull latest changes
         run: |
+          git config --global --add safe.directory ${{ secrets.REPO_DIR }}
           cd ${{ secrets.REPO_DIR }}
           git pull
