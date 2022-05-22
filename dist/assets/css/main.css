@@ -74,6 +74,15 @@ body {
   margin-left: -5px;
 }
 
+#build a {
+  text-decoration: none;
+  color: inherit; 
+}
+
+#build a:hover {
+  text-decoration: underline;
+}
+
 #footer {
   position: absolute;
   bottom: 0;

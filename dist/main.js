@@ -247,7 +247,9 @@ function initBuildInfo() {
     .then(build => {
       $('#build')
         .attr({'title': build.message})
-        .append(`<br>build ${build.sha}`)
+        .append(
+          `<br>build <a href="https://github.com/strong-code/strongcode-client/commit/${build.sha}">${build.sha}</a>`
+        )
     })
 }
 
