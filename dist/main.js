@@ -66,6 +66,7 @@ function initKeyHandlers() {
       case 'g':
         $('#gallery').toggle()
         createPasteList()
+        createPasteButtons()
         break
       case '?':
         $('#footer').toggle()
@@ -91,12 +92,24 @@ function initGalleryPopup() {
   })
 }
 
-function createPasteList() {
+function createPasteButtons() {
+  const btn = $('#older')
+
+  btn.click(() => {
+    let batch = parseInt($('#older').attr('batch')) + 1
+    btn.attr({'batch': batch})
+    return createPasteList(batch)
+  })
+}
+
+function createPasteList(batch) {
+  batch = batch || 1
   const currentTheme = $('html').attr('data-theme')
   $('#paste-list').empty()
 
-  $.get(HOST + '/api/pastes')
+  $.get(HOST + `/api/pastes?batch=${batch}`)
   .done(res => {
+    console.log(res.pastes)
     res.pastes.forEach(paste => {
       let icon = $('<img>').attr({'src': 'assets/icons/garbage.png', 'class': 'icon paste-icon'}).click(() => {
         $.ajax({
