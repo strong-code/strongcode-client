@@ -40,6 +40,15 @@ body {
   height: 24px;
 }
 
+#weather a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#weather a:hover {
+  text-decoration: underline;
+}
+
 #search {
   margin: 0 auto;
   text-align: center;

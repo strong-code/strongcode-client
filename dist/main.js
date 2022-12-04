@@ -247,7 +247,9 @@ function initWeather() {
 
   $.get('https://wttr.in/?format=3')
   .done(res => {
-    weather.text(res.replace('+', ''))
+    let forecast = res.replace('+', '')
+    let wg = 'https://www.wunderground.com/weather/us/ca/san-francisco'
+    weather.html(`<a href='${wg}'>${forecast}</a>`)
   })
   .fail(e => {
     weather.text('Weather unavailable')
