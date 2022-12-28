@@ -3,3 +3,5 @@ package-lock.json
 dist/strongcode.js
 *.swp
 dist/gallery.json
+dist/assets/build.json
+
