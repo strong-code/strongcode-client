@@ -217,8 +217,12 @@
           "url": "https://www.facebook.com/adsmanager/manage/campaigns?act=680565441959914&columns=name%2Cerrors%2Cdelivery%2Cresults%2Creach%2Cimpressions%2Ccost_per_result%2Cbudget%2Cspend%2Cend_time%2Cschedule%2Crelevance_score%3Ascore%2Cfrequency%2Cunique_actions%3Alink_click&attribution_windows=default"
         },
         {
-          "title": "PayPal",
-          "url": "https://www.paypal.com/"
+          "title": "Yahoo Finance",
+          "url": "https://www.finance.yahoo.com/"
+        },
+        {
+          "title": "Investing",
+          "url": "https://www.investing.com/"
         }
       ]
     }
