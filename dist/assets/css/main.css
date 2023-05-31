@@ -83,6 +83,15 @@ body {
   margin-left: -5px;
 }
 
+#dateContainer a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#dateContainer a:hover {
+  text-decoration: underline;
+}
+
 #build a {
   text-decoration: none;
   color: inherit; 
