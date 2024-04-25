@@ -18,4 +18,4 @@ jobs:
       - name: Pull latest changes
         run: |
           cd ${{ secrets.REPO_DIR }}
-          git fetch origin-https
+          git pull origin-https
