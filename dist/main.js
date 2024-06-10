@@ -71,6 +71,9 @@ function initKeyHandlers() {
       case '?':
         $('#footer').toggle()
         break
+      case 't':
+        window.location.href = HOST + '/api/track/active'
+        break
     }
   })
 }
@@ -100,6 +103,9 @@ function createPasteButtons() {
     btn.attr({'batch': batch})
     return createPasteList(batch)
   })
+}
+
+function createTrackingList() {
 }
 
 function createPasteList(batch) {
@@ -248,7 +254,7 @@ function initWeather() {
   $.get('https://wttr.in/?format=3&u')
   .done(res => {
     let forecast = res.replace('+', '')
-    let wg = 'https://www.wunderground.com/weather/us/ca/san-diego/KCASANDI5845'
+    let wg = 'https://www.wunderground.com/weather/us/ca/san-diego/KCASANDI411'
     weather.html(`<a href='${wg}'>${forecast}</a>`)
   })
   .fail(e => {
