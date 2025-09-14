@@ -24,8 +24,8 @@
           "url": "https://methstreams.com/index18/"
         },
         {
-          "title": "StreamEast",
-          "url": "https://www.streameast.co"
+          "title": "VIPRow",
+          "url": "https://www.viprow.nu/"
         },
         {
           "title": "BuffStreams",
@@ -120,6 +120,10 @@
         {
           "title": "Whats My DNS",
           "url": "https://www.whatsmydns.net/"
+        },
+        {
+          "title": "Cobalt",
+          "url": "https://cobalt.tools/"
         }
       ]
     },
