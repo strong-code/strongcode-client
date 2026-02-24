@@ -250,15 +250,17 @@ function initDate() {
 
 function initWeather() {
   let weather = $('#weather')
+  let wg = 'https://www.wunderground.com/weather/us/ca/san-diego/KCASANDI411'
+
+  weather.html(`<a href='${wg}'>Weather</a>`)
 
   $.get('https://wttr.in/92101?format=3&u')
   .done(res => {
     let forecast = res.replace('+', '')
-    let wg = 'https://www.wunderground.com/weather/us/ca/san-diego/KCASANDI411'
     weather.html(`<a href='${wg}'>${forecast}</a>`)
   })
   .fail(e => {
-    weather.text('Weather unavailable')
+    console.log('Unable to fetch wttr.in weather')
   })
 }
 
