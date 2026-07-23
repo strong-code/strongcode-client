@@ -254,14 +254,42 @@ function initWeather() {
 
   weather.html(`<a href='${wg}'>Weather</a>`)
 
-  $.get('https://wttr.in/92101?format=3&u')
-  .done(res => {
-    let forecast = res.replace('+', '')
+  $.getJSON("https://wttr.in/92101?format=j1", (data) => {
+    const loc = data.nearest_area[0].areaName[0].value || "92101"
+
+	const current = data.current_condition[0]
+	const tempF = current.temp_F
+	const desc = current.weatherDesc[0].value
+
+	// Map description → emoji (wttr uses its own icons, so we approximate)
+	const getIcon = (desc) => {
+	  const d = desc.toLowerCase();
+
+	  if (d.includes("sun") || d.includes("clear")) return "☀️";
+	  if (d.includes("partly") || d.includes("cloud")) return "⛅";
+	  if (d.includes("overcast")) return "☁️";
+	  if (d.includes("rain") || d.includes("drizzle")) return "🌧️";
+	  if (d.includes("thunder")) return "⛈️";
+	  if (d.includes("snow")) return "❄️";
+	  if (d.includes("fog") || d.includes("mist")) return "🌫️";
+
+	  return "🌡️"; // fallback
+	}
+
+	const icon = getIcon(desc)
+
+	const forecast = `${loc}: ${icon} +${tempF}°F`
     weather.html(`<a href='${wg}'>${forecast}</a>`)
   })
-  .fail(e => {
-    console.log('Unable to fetch wttr.in weather')
-  })
+
+  // $.get('https://wttr.in/92101?format=3&u')
+  // .done(res => {
+  //   // let forecast = res.replace('+', '')
+  //   weather.html(`<a href='${wg}'>${forecast}</a>`)
+  // })
+  // .fail(e => {
+  //   console.log('Unable to fetch wttr.in weather')
+  // })
 }
 
 function initBuildInfo() {
