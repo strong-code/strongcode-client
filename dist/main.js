@@ -202,9 +202,6 @@ function shortenUrl(url) {
 }
 
 function uploadPaste(payload) {
-  const status = $('#uploadStatus')
-  status.text('UPLOADING')
-
   $.ajax({
     type: 'POST',
     url: HOST + '/api/paste',
@@ -214,15 +211,11 @@ function uploadPaste(payload) {
   })
   .done(res => {
     console.log('File uploaded to: ' + res.path)
-    $('#welcomeMsg')
-      .addClass('hosted-result')
-      .html(`<a href="${res.path}">${res.path}</a>`)
-    status.text('HOSTED')
+    $('#welcomeMsg').html(`<a href="${res.path}">${res.path}</a>`)
     navigator.clipboard.writeText(res.path)
   })
   .fail(err => {
     console.log(err)
-    status.text('UPLOAD FAILED')
   })
 }
 

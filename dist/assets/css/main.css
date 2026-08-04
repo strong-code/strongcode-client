@@ -147,34 +147,6 @@ a:hover { color: var(--accent-color); }
   text-rendering: optimizeLegibility;
   animation: none;
 }
-#uploadStatus:not(:empty) {
-  position: absolute;
-  top: calc(100% + 10px);
-  left: 28px;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  margin-top: 39px;
-  padding: 6px 11px;
-  border: 1px solid color-mix(in srgb, var(--accent-color) 50%, transparent);
-  border-left: 3px solid var(--accent-color);
-  border-radius: 2px;
-  background: var(--accent-soft);
-  box-shadow: 0 0 16px color-mix(in srgb, var(--accent-color) 14%, transparent), inset 0 0 12px color-mix(in srgb, var(--accent-color) 5%, transparent);
-  color: var(--accent-color);
-  font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-#uploadStatus:not(:empty)::before {
-  content: "//";
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.7rem;
-  font-weight: 900;
-}
 #apiStatus:not(:empty)::before {
   content: "!";
   display: grid;
@@ -234,12 +206,6 @@ a:hover { color: var(--accent-color); }
   line-height: 1;
 }
 #welcomeMsg a { color: var(--accent-color); }
-#welcomeMsg.hosted-result {
-  font-size: clamp(0.85rem, 2vw, 1.1rem);
-  font-weight: 500;
-  letter-spacing: 0;
-  line-height: 1.4;
-}
 
 #weather {
   min-height: 28px;
