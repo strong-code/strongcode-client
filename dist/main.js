@@ -80,7 +80,7 @@ function initKeyHandlers() {
 
 function initGalleryPopup() {
   $('#paste-list a').on('mouseenter', (e) => {
-    $('.popup').css({left: e.pageX-310, top: e.pageY-105}).height(400).width(240).show()
+    $('.popup').css({left: e.pageX-310, top: e.pageY-105}).show()
 
     switch (e.target.href.split('.').pop()) {
       case 'txt':
