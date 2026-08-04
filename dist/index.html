@@ -1,8 +1,12 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>strongco.de</title>
-  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
-  <link href="assets/css/skeleton.css" rel="stylesheet" type="text/css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link href="assets/css/main.css" rel="stylesheet" type="text/css">
   <script type="module" src="main.js"></script>
 </head>
@@ -11,7 +15,9 @@
 
 
   <div class="header-container">
-    <img id="darkmodeToggle" class="left-span" src="assets/icons/darkmode.png">
+    <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+      <img id="darkmodeToggle" src="assets/icons/darkmode.png" alt="">
+    </button>
     <span id="dateContainer" class="right-span">
       <a href="https://calendar.google.com/calendar/u/0/r">
         <span id="dateTop">
@@ -34,36 +40,40 @@
 
     <div id="weather"></div>
     <div id="search">
-      <input tabindex="1" type="text" id="searchBar" class="u-full-width">
+     <div class="search-shell">
+       <span class="search-prompt" aria-hidden="true">&gt;</span>
+       <input tabindex="1" type="text" id="searchBar" aria-label="Search">
+       <span class="search-hint">enter</span>
+     </div>
 
       <div class="container" id="buttonContainer">
         <div class="menu-item">
-          <img src="assets/icons/download.png" class="icon menu-icon">
+            <img src="assets/icons/download.png" class="icon menu-icon" alt="">
             <div class="dropdown-container" id="downloads">
             </div>
         </div>
         <div class="menu-item">
-          <img src="assets/icons/4chan.png" class="icon menu-icon">
+            <img src="assets/icons/4chan.png" class="icon menu-icon" alt="">
             <div class="dropdown-container" id="4chan">
             </div>
         </div>
         <div class="menu-item">
-          <img src="assets/icons/computer.png" class="icon menu-icon">
+            <img src="assets/icons/computer.png" class="icon menu-icon" alt="">
             <div class="dropdown-container" id="coding">
             </div>
         </div>
         <div class="menu-item">
-          <img src="assets/icons/gaming.png" class="icon menu-icon">
+            <img src="assets/icons/gaming.png" class="icon menu-icon" alt="">
             <div class="dropdown-container" id="gaming">
             </div>
         </div>
         <div class="menu-item">
-          <img src="assets/icons/leisure.png" class="icon menu-icon">
+            <img src="assets/icons/leisure.png" class="icon menu-icon" alt="">
             <div class="dropdown-container" id="leisure">
             </div>
         </div>
         <div class="menu-item">
-          <img src="assets/icons/business.png" class="icon menu-icon">
+            <img src="assets/icons/business.png" class="icon menu-icon" alt="">
             <div class="dropdown-container" id="business">
             </div>
         </div>
@@ -78,4 +88,5 @@
 
   <div id="footer"></div>
 
-</body
+</body>
+</html>

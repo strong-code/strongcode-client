@@ -22,7 +22,7 @@ $('.header-container').ready(() => {
   initDate()
 })
 
-$('#darkmodeToggle').click((el) => {
+$('.theme-toggle').click(() => {
   const currentTheme = $('html').attr('data-theme')
   const date = new Date()
   date.setTime(date.getTime() + (10 * 365 * 24 * 60 * 60))
@@ -157,7 +157,7 @@ function initHealth() {
       .append(`<p>Total pastes: ${res.totalPastes}`)
   })
   .fail(e => {
-    stat.text('API is offline').css('color', 'red').css('font-weight', 'bold')
+    stat.text('API is offline')
   })
 
   stat.click(() => {
@@ -303,4 +303,3 @@ function initBuildInfo() {
         )
     })
 }
-
