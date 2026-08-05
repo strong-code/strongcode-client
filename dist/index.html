@@ -35,6 +35,26 @@
     <span id="apiStatus" class="left-span"></span>
   </div>
 
+  <aside id="notesWidget" class="notes-widget" aria-label="Notes">
+    <div class="notes-heading">
+      <div>
+        <span class="notes-kicker">PERSONAL</span>
+        <h2>Notes</h2>
+      </div>
+      <button id="notesCollapse" class="notes-icon-button" type="button" aria-label="Collapse notes" aria-expanded="true">-</button>
+    </div>
+    <div id="notesContent" class="notes-content">
+      <div class="notes-actions">
+        <button id="addNote" class="notes-action notes-action-primary" type="button">+ New note</button>
+        <button id="exportNotes" class="notes-action" type="button">Export</button>
+        <button id="importNotes" class="notes-action" type="button">Import</button>
+        <input id="notesFile" type="file" accept="application/json,.json" hidden>
+      </div>
+      <div id="notesList" class="notes-list"></div>
+      <p id="notesEmpty" class="notes-empty">No notes yet. Start with a quick thought.</p>
+    </div>
+  </aside>
+
   <div class="container" id="main">
     <h2 id="welcomeMsg">welcome home</h2>
 

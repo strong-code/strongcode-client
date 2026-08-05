@@ -184,6 +184,83 @@ a:hover { color: var(--accent-color); }
   animation: alert-border 2.4s linear infinite;
 }
 
+.notes-widget {
+  position: fixed;
+  top: 82px;
+  left: 22px;
+  z-index: 4;
+  width: 272px;
+  max-height: calc(100vh - 104px);
+  overflow: visible;
+  border: 1px solid var(--line-strong);
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--surface-color) 96%, transparent);
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+.header-container.api-offline + .notes-widget { top: 136px; }
+.notes-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 14px 11px;
+  border-bottom: 1px solid var(--line-color);
+}
+.notes-kicker {
+  color: var(--accent-color);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+}
+.notes-heading h2 { margin: 1px 0 0; font-family: "Archivo", sans-serif; font-size: 1.3rem; line-height: 1; }
+.notes-icon-button, .note-delete {
+  border: 0;
+  background: transparent;
+  color: var(--muted-color);
+  cursor: pointer;
+}
+.notes-icon-button { width: 25px; height: 25px; border: 1px solid var(--line-color); border-radius: 3px; line-height: 1; }
+.notes-icon-button:hover, .note-delete:hover { color: var(--danger-color); }
+.notes-content { max-height: calc(100vh - 170px); overflow-y: auto; overflow-x: visible; padding: 10px; }
+.is-collapsed .notes-content { display: none; }
+.notes-actions { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 9px; }
+.notes-action { padding: 4px 7px; border: 1px solid var(--line-color); border-radius: 3px; background: transparent; color: var(--muted-color); cursor: pointer; font-family: "JetBrains Mono", monospace; font-size: 0.62rem; }
+.notes-action:hover { border-color: var(--accent-color); color: var(--accent-color); }
+.notes-action-primary { border-color: var(--accent-color); color: var(--accent-color); }
+.note-item { position: relative; margin-bottom: 6px; border: 1px solid var(--line-color); border-radius: 3px; background: var(--background-color); }
+.note-row { position: relative; display: flex; align-items: center; min-height: 35px; }
+.note-title { display: flex; align-items: center; gap: 7px; flex: 1; min-width: 0; padding: 8px 7px; border: 0; background: transparent; color: var(--font-soft); cursor: pointer; text-align: left; font-family: "JetBrains Mono", monospace; font-size: 0.68rem; }
+.note-title span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.note-title:hover { color: var(--accent-color); }
+.note-row.note-glow-yellow { background: rgba(255, 219, 77, 0.1); box-shadow: inset 0 0 10px rgba(255, 219, 77, 0.38), 0 0 11px rgba(255, 190, 40, 0.25); }
+.note-row::after {
+  content: attr(data-timestamp);
+  position: absolute;
+  z-index: 2;
+  top: calc(100% + 6px);
+  left: 7px;
+  display: none;
+  padding: 4px 7px;
+  border: 1px solid var(--line-color);
+  border-radius: 2px;
+  background: var(--surface-color);
+  color: var(--muted-color);
+  font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.68rem;
+  white-space: nowrap;
+  box-shadow: var(--shadow);
+}
+.note-row.timestamp-above::after { top: auto; bottom: calc(100% + 6px); }
+.note-row:hover::after { display: block; }
+.note-chevron { width: 9px; color: var(--accent-color); font-size: 0.6rem; }
+.note-delete { padding: 8px 9px; font-family: monospace; font-size: 0.7rem; }
+.note-editor { display: none; padding: 0 7px 7px; }
+.is-expanded .note-editor { display: block; }
+.note-editor textarea { display: block; width: 100%; min-height: 86px; margin: 0 0 4px; padding: 7px; resize: vertical; border: 1px solid var(--line-color); border-radius: 2px; outline: 0; background: var(--surface-color); color: var(--font-color); font-family: "Inter", sans-serif; font-size: 0.78rem; line-height: 1.45; }
+.note-editor textarea:focus { border-color: var(--accent-color); box-shadow: 0 0 0 2px var(--accent-soft); }
+.note-saved { color: var(--muted-color); font-family: "JetBrains Mono", monospace; font-size: 0.58rem; }
+.notes-empty { margin: 18px 5px 12px; color: var(--muted-color); font-size: 0.75rem; line-height: 1.4; }
+
 @property --alert-angle {
   syntax: "<angle>";
   inherits: false;
@@ -405,6 +482,8 @@ a:hover { color: var(--accent-color); }
     width: min(250px, calc(100vw - 28px));
   }
   .dropdown-container { min-width: 160px; }
+  .notes-widget { top: 70px; left: 14px; width: min(272px, calc(100vw - 28px)); max-height: calc(100vh - 84px); }
+  .header-container.api-offline + .notes-widget { top: 148px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

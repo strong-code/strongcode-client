@@ -16,6 +16,7 @@ $('body').ready(() => {
   initKeyHandlers()
   initWeather()
   initDarkmode()
+  initNotes()
 })
 
 $('.header-container').ready(() => {
@@ -59,7 +60,7 @@ function initDarkmode() {
 
 function initKeyHandlers() {
   $('body').keypress(ev => {
-    if ($('#searchBar').is(':focus')) 
+    if ($(ev.target).is('input, textarea, select, [contenteditable="true"]'))
       return
 
     switch (ev.key) {
@@ -74,6 +75,16 @@ function initKeyHandlers() {
       case 't':
         window.location.href = HOST + '/api/track/active'
         break
+      case 'n':
+        $('#addNote').trigger('click')
+        break
+    }
+  })
+
+  $('body').keydown(ev => {
+    if (ev.ctrlKey && ev.key === 'Enter' && $(ev.target).is('textarea')) {
+      ev.preventDefault()
+      $(ev.target).closest('.note-item').find('.note-title').trigger('click')
     }
   })
 }
@@ -152,12 +163,16 @@ function initHealth() {
   $.get(HOST + '/api/health')
   .done(res => {
     stat.text('')
+    $('.header-container').removeClass('api-offline')
+    $('body').removeClass('api-offline')
     $('#footer')
       .append(`Paste directory size: ${res.folderSize}`)
       .append(`<p>Total pastes: ${res.totalPastes}`)
   })
   .fail(e => {
     stat.text('API is offline')
+    $('.header-container').addClass('api-offline')
+    $('body').addClass('api-offline')
   })
 
   stat.click(() => {
@@ -302,4 +317,150 @@ function initBuildInfo() {
           `<br>build <a href="https://github.com/strong-code/strongcode-client/commit/${build.sha}">${build.sha}</a>`
         )
     })
+}
+
+function initNotes() {
+  const storageKey = 'strongcode-notes'
+  const widget = $('#notesWidget')
+  const list = $('#notesList')
+  const empty = $('#notesEmpty')
+  let notes = loadNotes()
+  widget.addClass('is-collapsed')
+  $('#notesCollapse').attr({ 'aria-expanded': false, 'aria-label': 'Expand notes' }).text('+')
+
+  $('#notesCollapse').click(() => {
+    const collapsed = widget.toggleClass('is-collapsed').hasClass('is-collapsed')
+    $('#notesCollapse')
+      .attr('aria-expanded', !collapsed)
+      .attr('aria-label', collapsed ? 'Expand notes' : 'Collapse notes')
+      .text(collapsed ? '+' : '-')
+  })
+
+  $('#addNote').click(() => {
+    const now = new Date().toISOString()
+    const note = { id: Date.now().toString(), content: '', expanded: true, glow: 'none', createdAt: now, updatedAt: now }
+    notes.unshift(note)
+    saveNotes()
+    widget.removeClass('is-collapsed')
+    $('#notesCollapse').attr({ 'aria-expanded': true, 'aria-label': 'Collapse notes' }).text('-')
+    renderNotes()
+    list.find('textarea').first().focus()
+  })
+
+  $('#exportNotes').click(() => {
+    const blob = new Blob([JSON.stringify(notes, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = $('<a>').attr({ href: url, download: 'strongcode-notes.json' })
+    document.body.append(link[0])
+    link[0].click()
+    link.remove()
+    URL.revokeObjectURL(url)
+  })
+
+  $('#importNotes').click(() => $('#notesFile').click())
+  $('#notesFile').change(event => {
+    const file = event.target.files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      try {
+        const imported = JSON.parse(reader.result)
+        if (!Array.isArray(imported) || imported.some(note => typeof note.content !== 'string'))
+          throw new Error('Invalid notes file')
+        notes = imported.map((note, index) => ({
+          id: String(note.id || `${Date.now()}-${index}`),
+          content: note.content,
+          expanded: note.expanded !== false,
+          glow: note.glow === 'yellow' ? 'yellow' : 'none',
+          createdAt: note.createdAt || note.updatedAt || new Date().toISOString(),
+          updatedAt: note.updatedAt || null
+        }))
+        saveNotes()
+        renderNotes()
+      } catch (error) {
+        window.alert('That file does not contain valid notes.')
+      }
+      event.target.value = ''
+    }
+    reader.readAsText(file)
+  })
+
+  function loadNotes() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || '[]')
+      return Array.isArray(saved) ? saved.filter(note => note && typeof note.content === 'string') : []
+    } catch (error) {
+      return []
+    }
+  }
+
+  function saveNotes() {
+    localStorage.setItem(storageKey, JSON.stringify(notes))
+  }
+
+  function titleFor(content) {
+    const firstSentence = content.trim().match(/^(.+?[.!?])(?:\s|$)/)
+    const title = (firstSentence ? firstSentence[1] : content.trim()).replace(/\s+/g, ' ')
+    return title.length > 52 ? `${title.slice(0, 49).trim()}...` : title || 'Untitled note'
+  }
+
+  function renderNotes() {
+    list.empty()
+    empty.toggle(notes.length === 0)
+    notes.forEach((note, index) => {
+      const item = $('<article>').addClass('note-item').toggleClass('is-expanded', note.expanded)
+       const updatedAt = note.updatedAt || note.createdAt
+       const toggle = $('<button>').addClass('note-title').attr({ type: 'button', 'aria-expanded': note.expanded })
+        .append($('<span>').addClass('note-chevron').text(note.expanded ? 'v' : '>'))
+        .append($('<span>').text(titleFor(note.content)))
+       const remove = $('<button>').addClass('note-delete').attr({ type: 'button', 'aria-label': 'Delete note' }).text('x')
+       const row = $('<div>').addClass('note-row').toggleClass('timestamp-above', index === notes.length - 1).addClass(`note-glow-${note.glow || 'none'}`).attr('data-timestamp', formatTimestamp(updatedAt)).append(toggle, remove)
+      const editor = $('<div>').addClass('note-editor')
+      const textarea = $('<textarea>').attr({ rows: 5, 'aria-label': 'Note text', placeholder: 'Write something...' }).val(note.content)
+      const status = $('<span>').addClass('note-saved').text('saved locally')
+
+       toggle.click(event => {
+         if (event.shiftKey) {
+           event.preventDefault()
+           note.glow = note.glow === 'yellow' ? 'none' : 'yellow'
+           saveNotes()
+           row.removeClass('note-glow-none note-glow-yellow').addClass(`note-glow-${note.glow}`)
+           return
+         } else {
+           note.expanded = !note.expanded
+         }
+        saveNotes()
+        renderNotes()
+      })
+      remove.click(() => {
+        notes = notes.filter(entry => entry.id !== note.id)
+        saveNotes()
+        renderNotes()
+      })
+      textarea.on('input', () => {
+        note.content = textarea.val()
+        note.updatedAt = new Date().toISOString()
+        saveNotes()
+        row.attr('data-timestamp', formatTimestamp(note.updatedAt))
+        toggle.find('span:last-child').text(titleFor(note.content))
+      })
+      editor.append(textarea, status)
+      item.append(row, editor)
+      list.append(item)
+    })
+  }
+
+  function formatTimestamp(value) {
+    const date = new Date(value)
+    if (Number.isNaN(date.getTime())) return ''
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+    const year = date.getFullYear()
+    const hours = date.getHours() % 12 || 12
+    const minutes = String(date.getMinutes()).padStart(2, '0')
+    const period = date.getHours() >= 12 ? 'pm' : 'am'
+    return `${month}/${day}/${year} @ ${hours}:${minutes} ${period}`
+  }
+
+  renderNotes()
 }
