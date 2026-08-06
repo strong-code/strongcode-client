@@ -14,24 +14,7 @@ const searchSources = {
   "!last":     ["https://www.last.fm/search?q={Q}",                       "Last.fm"],
   "!r":        ["https://duckduckgo.com/?q=reddit+{Q}",                   "Reddit"],
   "!a":        ["https://smile.amazon.com/s?k={Q}",                       "Amazon"],
-  "$":         ["https://finance.yahoo.com/quote/{Q}",                    "Yahoo Finance"],
-  "!t":        ["https://api.goshippo.com/tracks/",                       "Tracking"]
-}
-
-function handleTrack(carrier, trackingNumber) {
-  $.ajax({
-    url: `https://strongco.de/api/track/new`,
-    type: 'POST',
-    data: {tracking_number: trackingNumber, carrier: carrier},
-    success: function(data) {
-      $('#welcomeMsg').text(`Shipment ${trackingNumber} added to shipment tracking`)
-    },
-    error: function(err) { 
-      $('#welcomeMsg').text(`Error creating Shippo tracking entry`)
-    }
-  })
-
-  return
+  "$":         ["https://finance.yahoo.com/quote/{Q}",                    "Yahoo Finance"]
 }
 
 function initSearch() {
@@ -55,11 +38,6 @@ function initSearch() {
     }
 
     if (e.key === 'Enter') {
-      if (chunk === '!t') {
-        const [carrier, trackingNumber] = searchBar.val().split(' ')
-        return handleTrack(carrier, trackingNumber)
-      }
-
       window.location = source[0].replace("{Q}", encodeURIComponent(searchBar.val().trim()))
     }
   })

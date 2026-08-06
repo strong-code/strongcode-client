@@ -55,6 +55,30 @@
     </div>
   </aside>
 
+  <aside id="trackingWidget" class="tracking-widget" aria-label="Shipment tracking" hidden>
+    <div class="tracking-heading">
+      <div>
+        <span class="tracking-kicker">INBOUND</span>
+        <h2>Shipments</h2>
+      </div>
+      <button id="trackingClose" class="tracking-icon-button" type="button" aria-label="Close tracking">x</button>
+    </div>
+    <div id="trackingContent" class="tracking-content">
+      <form id="trackingAddForm" class="tracking-add-form" hidden>
+        <input type="text" id="trackingNumberInput" placeholder="tracking number" autocomplete="off" spellcheck="false">
+        <input type="text" id="trackingItemInput" placeholder="description (optional)" autocomplete="off">
+        <div class="tracking-carrier-row">
+          <span id="trackingCarrierHint" class="tracking-carrier-hint"></span>
+          <select id="trackingCarrierSelect" hidden></select>
+        </div>
+      </form>
+      <button type="button" id="trackingAddBtn" class="tracking-action tracking-action-primary">+ Track</button>
+      <div id="trackingStatus" class="tracking-status"></div>
+      <div id="trackingList" class="tracking-list"></div>
+      <p id="trackingEmpty" class="tracking-empty">No active shipments. Add one above.</p>
+    </div>
+  </aside>
+
   <div class="container" id="main">
     <h2 id="welcomeMsg">welcome home</h2>
 
@@ -99,10 +123,6 @@
         </div>
 
       </div>
-    </div>
-    <div class="container" id="tracking">
-      <ul id="tracking-list">
-      </ul>
     </div>
   </div>
 

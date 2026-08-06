@@ -1,6 +1,7 @@
 import './assets/js/jquery-3.5.1.min.js'
 import './assets/js/paste.js'
 import { initSearch } from './assets/js/search.js'
+import { initTracking, toggleTracking } from './assets/js/tracking.js'
 const HOST = (window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://strongco.de')
 
 $('body').ready(() => {
@@ -17,6 +18,7 @@ $('body').ready(() => {
   initWeather()
   initDarkmode()
   initNotes()
+  initTracking(HOST)
 })
 
 $('.header-container').ready(() => {
@@ -73,7 +75,7 @@ function initKeyHandlers() {
         $('#footer').toggle()
         break
       case 't':
-        window.location.href = HOST + '/api/track/active'
+        toggleTracking()
         break
       case 'n':
         $('#addNote').trigger('click')
@@ -114,9 +116,6 @@ function createPasteButtons() {
     btn.attr({'batch': batch})
     return createPasteList(batch)
   })
-}
-
-function createTrackingList() {
 }
 
 function createPasteList(batch) {
