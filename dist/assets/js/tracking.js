@@ -236,7 +236,15 @@ function createTrackingList() {
     row.append(titleBtn, noteBtn, deleteBtn)
 
     const sub = $('<div>').addClass('tracking-subline')
-      .text(statusLine + (s.eta ? ` · ETA ${fmtDate(s.eta)}` : ''))
+      .append(document.createTextNode(statusLine))
+
+    if (s.eta) {
+      sub.append(document.createTextNode(' · '))
+      sub.append($('<span>')
+        .addClass('tracking-eta')
+        .toggleClass('is-delivered', !!s.delivered || String(s.status || '').toUpperCase() === 'DELIVERED')
+        .text(`ETA ${fmtDate(s.eta)}`))
+    }
 
     const archiveBtn = $('<button>').addClass('tracking-action tracking-archive').attr('type', 'button')
       .text('archive')

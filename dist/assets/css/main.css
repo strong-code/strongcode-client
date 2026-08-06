@@ -360,6 +360,8 @@ a:hover { color: var(--accent-color); }
 .tracking-note:hover::after { display: block; }
 .tracking-delete { padding: 8px 9px; font-family: monospace; font-size: 0.7rem; }
 .tracking-subline { padding: 0 9px 7px 25px; color: var(--muted-color); font-family: "JetBrains Mono", monospace; font-size: 0.6rem; line-height: 1.4; }
+.tracking-eta { color: var(--accent-color); }
+.tracking-eta.is-delivered { color: var(--success-color); }
 .tracking-detail { display: none; padding: 0 7px 7px; }
 .is-expanded .tracking-detail { display: block; }
 .tracking-history { margin-bottom: 6px; border-top: 1px solid var(--line-color); color: var(--font-soft); font-family: "JetBrains Mono", monospace; font-size: 0.62rem; }
