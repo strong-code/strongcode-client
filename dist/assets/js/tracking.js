@@ -296,6 +296,9 @@ function initTracking(host) {
   .done(res => {
     shipments = res || []
     createTrackingList()
+    if (shipments.some(s => s.delivered || String(s.status || '').toUpperCase() === 'DELIVERED')) {
+      $('#trackingWidget').prop('hidden', false)
+    }
   })
   .fail(() => setStatus('could not load shipments'))
 }
