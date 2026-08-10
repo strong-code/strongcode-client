@@ -380,6 +380,43 @@ a:hover { color: var(--accent-color); }
 .tracking-history-time { flex-shrink: 0; color: var(--muted-color); font-size: 0.56rem; }
 .tracking-history-empty { margin: 6px 2px; color: var(--muted-color); }
 .tracking-item-edit { flex: 1; margin: 5px 7px; }
+.tracking-deliveries-btn {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 1px 4px;
+  border-color: transparent;
+  color: var(--success-color);
+  font-size: 0.55rem;
+  line-height: 1.4;
+}
+.tracking-deliveries-btn:hover, .tracking-deliveries-btn.is-open { border-color: var(--success-color); }
+.tracking-deliveries-arrow { display: inline-block; font-size: 0.5rem; transition: transform 0.12s ease; }
+.tracking-deliveries-btn.is-open .tracking-deliveries-arrow { transform: rotate(180deg); }
+.tracking-deliveries { margin-top: 6px; border-top: 1px solid var(--line-color); }
+.tracking-delivery-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 2px;
+  border-bottom: 1px solid var(--line-color);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.6rem;
+  color: var(--muted-color);
+  cursor: pointer;
+}
+.tracking-delivery-chevron { color: var(--accent-color); transition: transform 0.12s ease; }
+.tracking-delivery-row.is-expanded .tracking-delivery-chevron { transform: rotate(90deg); }
+.tracking-delivery-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--font-soft); }
+.tracking-delivery-date { flex-shrink: 0; }
+.tracking-delivery-history {
+  display: none;
+  padding: 0 2px 5px 12px;
+  color: var(--font-soft);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.62rem;
+}
+.tracking-delivery-history .tracking-history-row { border-bottom: 0; }
 .tracking-empty { margin: 18px 5px 12px; color: var(--muted-color); font-size: 0.75rem; line-height: 1.4; }
 
 @property --alert-angle {

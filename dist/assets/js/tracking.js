@@ -13,6 +13,7 @@ const CARRIERS = [
 
 let API = ''
 let shipments = []
+let deliveries = []
 
 function detectCarrier(trackingNumber) {
   const tn = trackingNumber.trim().replace(/\s+/g, '')
@@ -325,6 +326,68 @@ function toggleAddForm() {
   }
 }
 
+function renderDeliveries() {
+  const box = $('#trackingDeliveries').empty()
+
+  deliveries.forEach(d => {
+    const title = d.item || `${d.carrier.toUpperCase()} ${String(d.tracking_number).slice(-6)}`
+    const history = $('<div>').addClass('tracking-delivery-history')
+
+    const row = $('<div>').addClass('tracking-delivery-row')
+      .append($('<span>').addClass('tracking-delivery-chevron').text('›'))
+      .append($('<span>').addClass('tracking-delivery-title').text(title))
+      .append($('<span>').addClass('tracking-delivery-date').text(fmtDate(d.delivered_at)))
+      .on('click', () => {
+        const expanded = row.toggleClass('is-expanded').hasClass('is-expanded')
+
+        if (!expanded) {
+          history.hide()
+          return
+        }
+
+        if (history.children().length) {
+          history.show()
+          return
+        }
+
+        history.append($('<p>').addClass('tracking-history-empty').text('loading…')).show()
+        $.get(`${API}/api/track/${encodeURIComponent(d.tracking_number)}?all=true`)
+        .done(res => {
+          history.empty()
+          if (!res.data || res.data.length === 0) {
+            history.append($('<p>').addClass('tracking-history-empty').text('No tracking events yet.'))
+            return
+          }
+          res.data.forEach(ev => {
+            history.append(
+              $('<div>').addClass('tracking-history-row')
+                .append($('<span>').addClass('tracking-history-status').text(ev.status + (ev.location ? ` — ${ev.location}` : '')))
+                .append($('<span>').addClass('tracking-history-time').text(fmtTime(ev.updated_at)))
+            )
+          })
+        })
+        .fail(() => {
+          history.empty().append($('<p>').addClass('tracking-history-empty').text('error loading history'))
+        })
+      })
+
+    box.append(row, history)
+  })
+}
+
+function toggleDeliveries() {
+  const box = $('#trackingDeliveries')
+  const open = box.prop('hidden')
+
+  if (open) {
+    renderDeliveries()
+    box.prop('hidden', false)
+  } else {
+    box.prop('hidden', true)
+  }
+  $('#trackingDeliveriesBtn').toggleClass('is-open', open)
+}
+
 function initTracking(host) {
   API = host
 
@@ -332,6 +395,7 @@ function initTracking(host) {
   $('#trackingAddForm').on('submit', e => { e.preventDefault(); addShipment() })
   $('#trackingAddBtn').on('click', toggleAddForm)
   $('#trackingNumberInput').on('input', updateCarrierHint)
+  $('#trackingDeliveriesBtn').on('click', toggleDeliveries)
 
   $.get(API + '/api/track/active')
   .done(res => {
@@ -342,6 +406,14 @@ function initTracking(host) {
     }
   })
   .fail(() => setStatus('could not load shipments'))
+
+  $.get(API + '/api/track/deliveries')
+  .done(res => {
+    deliveries = (res && res.deliveries) || []
+    if (deliveries.length > 0) {
+      $('#trackingDeliveriesBtn').prop('hidden', false)
+    }
+  })
 }
 
 export { initTracking, toggleTracking, detectCarrier }
