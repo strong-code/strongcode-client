@@ -359,6 +359,17 @@ a:hover { color: var(--accent-color); }
 }
 .tracking-note:hover::after { display: block; }
 .tracking-delete { padding: 8px 9px; font-family: monospace; font-size: 0.7rem; }
+.tracking-item.is-delivered { border-color: var(--success-color); }
+.tracking-dismiss {
+  padding: 8px 9px;
+  border: 0;
+  background: transparent;
+  color: var(--success-color);
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 0.7rem;
+}
+.tracking-dismiss:hover { color: var(--danger-color); }
 .tracking-subline { padding: 0 9px 7px 25px; color: var(--muted-color); font-family: "JetBrains Mono", monospace; font-size: 0.6rem; line-height: 1.4; }
 .tracking-eta { color: var(--accent-color); }
 .tracking-eta.is-delivered { color: var(--success-color); }

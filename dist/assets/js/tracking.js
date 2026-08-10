@@ -130,7 +130,14 @@ function removeShipment(tn) {
     createTrackingList()
     setStatus(`removed ${tn}`)
   })
-  .fail(() => setStatus('error removing shipment'))
+  .fail(xhr => {
+    if (xhr.status === 404) {
+      shipments = shipments.filter(x => x.tracking_number !== tn)
+      createTrackingList()
+      return
+    }
+    setStatus('error removing shipment')
+  })
 }
 
 function archiveShipment(tn) {
@@ -206,11 +213,29 @@ function editItem(row, s) {
   input.on('blur', () => finish(true))
 }
 
+const deliveredTimers = new Set()
+
+function scheduleDeliveredRemoval(s) {
+  if (!s.delivered_at || deliveredTimers.has(s.tracking_number)) return
+
+  const expiresAt = new Date(s.delivered_at).getTime() + 24 * 60 * 60 * 1000
+  const delay = expiresAt - Date.now()
+
+  if (!Number.isFinite(delay) || delay <= 0) return
+
+  deliveredTimers.add(s.tracking_number)
+  setTimeout(() => {
+    deliveredTimers.delete(s.tracking_number)
+    removeShipment(s.tracking_number)
+  }, delay)
+}
+
 function createTrackingList() {
   const list = $('#trackingList').empty()
   $('#trackingEmpty').toggle(shipments.length === 0)
 
   shipments.forEach(s => {
+    const delivered = !!s.delivered || String(s.status || '').toUpperCase() === 'DELIVERED'
     const title = s.item || `${s.carrier.toUpperCase()} ${s.tracking_number.slice(-6)}`
     const statusLine = s.status
       ? s.status + (s.location ? ` — ${s.location}` : '')
@@ -233,7 +258,11 @@ function createTrackingList() {
       .text('x')
       .on('click', () => removeShipment(s.tracking_number))
 
-    row.append(titleBtn, noteBtn, deleteBtn)
+    const dismissBtn = $('<button>').addClass('tracking-dismiss').attr({ type: 'button', 'aria-label': 'Remove delivered shipment', title: 'Remove delivered shipment' })
+      .text('✓')
+      .on('click', () => removeShipment(s.tracking_number))
+
+    row.append(titleBtn, noteBtn, delivered ? dismissBtn : deleteBtn)
 
     const sub = $('<div>').addClass('tracking-subline')
       .append(document.createTextNode(statusLine))
@@ -242,19 +271,23 @@ function createTrackingList() {
       sub.append(document.createTextNode(' · '))
       sub.append($('<span>')
         .addClass('tracking-eta')
-        .toggleClass('is-delivered', !!s.delivered || String(s.status || '').toUpperCase() === 'DELIVERED')
+        .toggleClass('is-delivered', delivered)
         .text(`ETA ${fmtDate(s.eta)}`))
     }
 
-    const archiveBtn = $('<button>').addClass('tracking-action tracking-archive').attr('type', 'button')
-      .text('archive')
-      .on('click', () => archiveShipment(s.tracking_number))
-
     const detail = $('<div>').addClass('tracking-detail')
       .append($('<div>').addClass('tracking-history'))
-      .append(archiveBtn)
 
-    list.append($('<article>').addClass('tracking-item').append(row, sub, detail))
+    if (!delivered) {
+      const archiveBtn = $('<button>').addClass('tracking-action tracking-archive').attr('type', 'button')
+        .text('archive')
+        .on('click', () => archiveShipment(s.tracking_number))
+      detail.append(archiveBtn)
+    }
+
+    list.append($('<article>').addClass('tracking-item').toggleClass('is-delivered', delivered).append(row, sub, detail))
+
+    if (delivered) scheduleDeliveredRemoval(s)
   })
 }
 
