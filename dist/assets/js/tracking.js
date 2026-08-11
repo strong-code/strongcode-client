@@ -20,6 +20,39 @@ function detectCarrier(trackingNumber) {
   return CARRIERS.filter(c => c.patterns.some(p => p.test(tn)))
 }
 
+function trackingUrl(carrier, trackingNumber) {
+  const tn = String(trackingNumber).trim().replace(/\s+/g, '')
+  const urls = {
+    ups:          `https://www.ups.com/track?tracknum=${encodeURIComponent(tn)}`,
+    usps:         `https://tools.usps.com/tracking/${encodeURIComponent(tn)}`,
+    fedex:        `https://www.fedex.com/fedextrack/?trknbr=${encodeURIComponent(tn)}`,
+    dhl_express:  `https://www.dhl.com/us-en/home/tracking.html?tracking-id=${encodeURIComponent(tn)}`,
+    ontrac:       `https://www.ontrac.com/trackingresult.asp?tracking_number=${encodeURIComponent(tn)}`,
+    lasership:    `https://www.lasership.com/track/${encodeURIComponent(tn)}`
+  }
+  return urls[carrier] || ''
+}
+
+function showTrackingNumber(anchor, s) {
+  const existing = anchor.find('.tracking-tn-popover')
+  if (existing.length) {
+    existing.remove()
+    return
+  }
+
+  const url = trackingUrl(s.carrier, s.tracking_number)
+  const pop = $('<div>').addClass('tracking-tn-popover')
+  const link = $('<a>').attr({ href: url, target: '_blank', rel: 'noopener' }).text(s.tracking_number)
+  pop.append(url ? link : $('<span>').text(s.tracking_number))
+  anchor.append(pop)
+
+  const dismiss = e => {
+    if (!$.contains(pop[0], e.target)) pop.remove()
+    $(document).off('click', dismiss)
+  }
+  setTimeout(() => $(document).on('click', dismiss), 0)
+}
+
 function fmtTime(ts) {
   if (!ts) return ''
   return new Date(ts).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
@@ -259,6 +292,10 @@ function createTrackingList() {
       .text('✎')
       .on('click', e => editItem($(e.currentTarget).closest('.tracking-row'), s))
 
+    const tnBtn = $('<button>').addClass('tracking-tn').attr({ type: 'button', 'aria-label': 'Show tracking number', title: 'Show tracking number' })
+      .text('#')
+      .on('click', e => showTrackingNumber($(e.currentTarget), s))
+
     const deleteBtn = $('<button>').addClass('tracking-delete').attr({ type: 'button', 'aria-label': 'Delete shipment' })
       .text('x')
       .on('click', () => removeShipment(s.tracking_number))
@@ -267,7 +304,7 @@ function createTrackingList() {
       .text('✓')
       .on('click', () => removeShipment(s.tracking_number))
 
-    row.append(titleBtn, noteBtn, delivered ? dismissBtn : deleteBtn)
+    row.append(titleBtn, tnBtn, noteBtn, delivered ? dismissBtn : deleteBtn)
 
     const sub = $('<div>').addClass('tracking-subline')
       .append(document.createTextNode(statusLine))

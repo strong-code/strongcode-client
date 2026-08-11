@@ -338,6 +338,32 @@ a:hover { color: var(--accent-color); }
   cursor: pointer;
   font-size: 0.7rem;
 }
+.tracking-tn {
+  position: relative;
+  padding: 8px 4px;
+  border: 0;
+  background: transparent;
+  color: var(--muted-color);
+  cursor: pointer;
+  font-size: 0.7rem;
+}
+.tracking-tn:hover { color: var(--accent-color); }
+.tracking-tn-popover {
+  position: absolute;
+  z-index: 3;
+  top: calc(100% + 6px);
+  right: 0;
+  padding: 4px 7px;
+  border: 1px solid var(--line-color);
+  border-radius: 2px;
+  background: var(--surface-color);
+  box-shadow: var(--shadow);
+  font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+.tracking-tn-popover a { color: var(--accent-color); }
+.tracking-tn-popover a:hover { text-decoration: underline; }
 .tracking-note.has-note { color: var(--accent-color); }
 .tracking-note::after {
   content: attr(data-note);
