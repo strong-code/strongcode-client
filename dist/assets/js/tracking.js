@@ -88,13 +88,17 @@ function addShipment() {
   })
   .done(res => {
     adding = false
-    shipments.unshift(res.shipment)
-    createTrackingList()
+    const added = res.shipment
+    const already = shipments.some(s => s.tracking_number === added.tracking_number)
+    if (!already) {
+      shipments.unshift(added)
+      createTrackingList()
+    }
     $('#trackingNumberInput').val('')
     $('#trackingItemInput').val('')
     closeAddForm()
     updateCarrierHint()
-    setStatus(`added ${res.shipment.tracking_number}`)
+    setStatus(already ? `already tracking ${added.tracking_number}` : `added ${added.tracking_number}`)
   })
   .fail(xhr => {
     adding = false
