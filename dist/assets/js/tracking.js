@@ -286,6 +286,13 @@ function createTrackingList() {
       .append($('<span>').addClass('tracking-title-text').text(title))
       .on('click', e => toggleDetail($(e.currentTarget).closest('.tracking-item'), s))
 
+    if (s.eta) {
+      titleBtn.append($('<span>')
+        .addClass('tracking-eta tracking-title-eta')
+        .toggleClass('is-delivered', delivered)
+        .text(`ETA ${fmtDate(s.eta)}`))
+    }
+
     const noteBtn = $('<button>').addClass('tracking-note').attr({ type: 'button', 'aria-label': 'Edit description' })
       .toggleClass('has-note', !!s.item)
       .attr('data-note', s.item || 'add a description')
@@ -308,14 +315,6 @@ function createTrackingList() {
 
     const sub = $('<div>').addClass('tracking-subline')
       .append(document.createTextNode(statusLine))
-
-    if (s.eta) {
-      sub.append(document.createTextNode(' · '))
-      sub.append($('<span>')
-        .addClass('tracking-eta')
-        .toggleClass('is-delivered', delivered)
-        .text(`ETA ${fmtDate(s.eta)}`))
-    }
 
     const detail = $('<div>').addClass('tracking-detail')
       .append($('<div>').addClass('tracking-history'))

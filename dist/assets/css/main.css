@@ -327,6 +327,7 @@ a:hover { color: var(--accent-color); }
 .tracking-title { display: flex; align-items: center; gap: 7px; flex: 1; min-width: 0; padding: 8px 7px; border: 0; background: transparent; color: var(--font-soft); cursor: pointer; text-align: left; font-family: "JetBrains Mono", monospace; font-size: 0.68rem; }
 .tracking-title:hover { color: var(--accent-color); }
 .tracking-title-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tracking-title-eta { flex: 0 0 auto; margin-left: auto; white-space: nowrap; font-size: 0.6rem; }
 .tracking-chevron { width: 9px; color: var(--accent-color); font-size: 0.6rem; transition: transform 0.12s ease; }
 .is-expanded .tracking-chevron { transform: rotate(90deg); }
 .tracking-note {
