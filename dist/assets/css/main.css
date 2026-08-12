@@ -634,6 +634,7 @@ a:hover { color: var(--accent-color); }
 .popup img { display: block; max-width: 240px; max-height: 400px; width: auto; height: auto; }
 
 #footer {
+  display: none;
   position: fixed;
   right: 24px;
   bottom: 20px;
