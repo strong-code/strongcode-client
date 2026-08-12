@@ -2,6 +2,7 @@ import './assets/js/jquery-3.5.1.min.js'
 import './assets/js/paste.js'
 import { initSearch } from './assets/js/search.js'
 import { initTracking, toggleTracking } from './assets/js/tracking.js'
+import { initOpenCode, getOpenCodeHealth } from './assets/js/opencode.js'
 const HOST = (window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://strongco.de')
 
 $('body').ready(() => {
@@ -19,6 +20,7 @@ $('body').ready(() => {
   initDarkmode()
   initNotes()
   initTracking(HOST)
+  initOpenCode()
 })
 
 $('.header-container').ready(() => {
@@ -197,6 +199,14 @@ function initHealth() {
     stat.text('API is offline')
     $('.header-container').addClass('api-offline')
     $('body').addClass('api-offline')
+  })
+
+  getOpenCodeHealth().then(h => {
+    const status = h.online ? `opencode: online${h.version ? ' v' + h.version : ''}` : 'opencode: offline'
+    $('#footer')
+      .append(`<p>${status}`)
+      .append(`<p>providers: ${h.providers.length ? h.providers.join(', ') : 'none'}`)
+      .append(`<p>default model: ${h.defaultModel || 'n/a'}`)
   })
 
   stat.click(() => {

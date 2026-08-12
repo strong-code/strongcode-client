@@ -1,4 +1,5 @@
 import './jquery-3.5.1.min.js'
+import { sendToOpenCode } from './opencode.js'
 
 const searchSources = {
   "!g":        ["https://www.google.com/search?&q={Q}",                   "Google"],
@@ -26,11 +27,18 @@ function initSearch() {
 
   searchBar.attr('placeholder', source[1])
 
+  let isOC = false
+
   searchBar.on('keyup', e => {
     if (e.key === ' ') {
       chunk = searchBar.val().split(' ')[0]
 
-      if (searchSources[chunk]) {
+      if (chunk === '!oc') {
+        isOC = true
+        welcomeMsg.text('asking opencode')
+        searchBar.attr('placeholder', 'OpenCode').val('').blur().focus()
+      } else if (searchSources[chunk]) {
+        isOC = false
         source = searchSources[chunk]
         welcomeMsg.text(`searching with ${source[1].toLowerCase()}`)
         searchBar.attr('placeholder', source[1]).val('').blur().focus()
@@ -38,7 +46,13 @@ function initSearch() {
     }
 
     if (e.key === 'Enter') {
-      window.location = source[0].replace("{Q}", encodeURIComponent(searchBar.val().trim()))
+      const query = searchBar.val().trim()
+      if (isOC) {
+        isOC = false
+        sendToOpenCode(query)
+      } else {
+        window.location = source[0].replace("{Q}", encodeURIComponent(query))
+      }
     }
   })
 }

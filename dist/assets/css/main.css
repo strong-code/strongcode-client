@@ -649,6 +649,25 @@ a:hover { color: var(--accent-color); }
   box-shadow: var(--shadow);
 }
 
+#ocResult {
+  display: none;
+  margin: 14px 0 0;
+  padding: 10px 13px;
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  background: var(--surface-color);
+  color: var(--muted-color);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: left;
+  box-shadow: var(--shadow);
+}
+#ocResult:not(:empty) { display: block; }
+#ocResult.is-error { color: var(--accent-color); }
+
 @media (max-width: 600px) {
   .header-container { padding: 0 16px; }
   #apiStatus:not(:empty) { left: 14px; }
