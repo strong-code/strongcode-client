@@ -25,39 +25,76 @@ $('.header-container').ready(() => {
   initDate()
 })
 
-$('.theme-toggle').click(() => {
-  const currentTheme = $('html').attr('data-theme')
-  const date = new Date()
-  date.setTime(date.getTime() + (10 * 365 * 24 * 60 * 60))
+const SAN_DIEGO = { lat: 32.7157, lng: -117.1611 }
 
-  // lights on
-  if (currentTheme === 'dark') {
-    $('#darkmodeToggle').attr('src', 'assets/icons/darkmode.png')
-    $('.dark-theme').each((i, node) => {
-      $(node).removeClass('dark-theme')
-    })
-    $('html').attr('data-theme', 'light')
-    document.cookie = `darkmode=off; expires=${date.toGMTString()}; path=/` 
-  } else {
-    // lights off
-    $('#darkmodeToggle').attr('src', 'assets/icons/lightmode.png')
-    $('html').attr('data-theme', 'dark')
-    $('.icon').each((i, node) => {
-      $(node).addClass('dark-theme')
-    })
-    $('#darkmodeToggle').addClass('dark-theme')
-    document.cookie = `darkmode=on; expires=${date.toGMTString()}; path=/` 
-  }
-})
+function getCookie(name) {
+  const match = document.cookie.split('; ').find(c => c.indexOf(name + '=') === 0)
+  return match ? match.slice(name.length + 1) : null
+}
 
-function initDarkmode() {
-  if (document.cookie === 'darkmode=on') {
+function applyTheme(dark) {
+  if (dark) {
     $('html').attr('data-theme', 'dark')
     $('.icon').each((i, node) => {
       $(node).addClass('dark-theme')
     })
     $('#darkmodeToggle').addClass('dark-theme').attr('src', 'assets/icons/lightmode.png')
+  } else {
+    $('html').attr('data-theme', 'light')
+    $('.icon').each((i, node) => {
+      $(node).removeClass('dark-theme')
+    })
+    $('#darkmodeToggle').removeClass('dark-theme').attr('src', 'assets/icons/darkmode.png')
   }
+}
+
+function getCurrentLocation() {
+  return new Promise(resolve => {
+    $.getJSON('https://ipwho.is/')
+      .done(data => {
+        if (data && typeof data.latitude === 'number' && typeof data.longitude === 'number') {
+          resolve({ lat: data.latitude, lng: data.longitude })
+        } else {
+          resolve(SAN_DIEGO)
+        }
+      })
+      .fail(() => resolve(SAN_DIEGO))
+  })
+}
+
+function getSunTimes(lat, lng) {
+  return new Promise(resolve => {
+    $.getJSON(`https://api.sunrise-sunset.org/json?lat=${encodeURIComponent(lat)}&lng=${encodeURIComponent(lng)}&formatted=0`)
+      .done(data => {
+        if (!data || !data.results || !data.results.sunrise || !data.results.sunset) return resolve(null)
+        const sunrise = new Date(data.results.sunrise)
+        const sunset = new Date(data.results.sunset)
+        if (Number.isNaN(sunrise.getTime()) || Number.isNaN(sunset.getTime())) return resolve(null)
+        resolve({ sunrise, sunset })
+      })
+      .fail(() => resolve(null))
+  })
+}
+
+$('.theme-toggle').click(() => {
+  const dark = $('html').attr('data-theme') !== 'dark'
+  const date = new Date()
+  date.setTime(date.getTime() + (10 * 365 * 24 * 60 * 60))
+  applyTheme(dark)
+  document.cookie = `darkmode=${dark ? 'on' : 'off'}; expires=${date.toGMTString()}; path=/`
+})
+
+function initDarkmode() {
+  const cookie = getCookie('darkmode')
+  if (cookie === 'on') return applyTheme(true)
+  if (cookie === 'off') return applyTheme(false)
+
+  getCurrentLocation().then(loc => getSunTimes(loc.lat, loc.lng))
+    .then(times => {
+      if (!times) return
+      const now = new Date()
+      applyTheme(now < times.sunrise || now > times.sunset)
+    })
 }
 
 function initKeyHandlers() {
