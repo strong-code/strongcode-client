@@ -27,18 +27,18 @@ function initSearch() {
 
   searchBar.attr('placeholder', source[1])
 
-  let isOC = false
+  let ocMode = false
 
   searchBar.on('keyup', e => {
     if (e.key === ' ') {
       chunk = searchBar.val().split(' ')[0]
 
       if (chunk === '!oc') {
-        isOC = true
+        ocMode = true
         welcomeMsg.text('asking opencode')
         searchBar.attr('placeholder', 'OpenCode').val('').blur().focus()
       } else if (searchSources[chunk]) {
-        isOC = false
+        ocMode = false
         source = searchSources[chunk]
         welcomeMsg.text(`searching with ${source[1].toLowerCase()}`)
         searchBar.attr('placeholder', source[1]).val('').blur().focus()
@@ -47,8 +47,8 @@ function initSearch() {
 
     if (e.key === 'Enter') {
       const query = searchBar.val().trim()
-      if (isOC) {
-        isOC = false
+      if (ocMode) {
+        searchBar.val('')
         sendToOpenCode(query)
       } else {
         window.location = source[0].replace("{Q}", encodeURIComponent(query))

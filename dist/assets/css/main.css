@@ -650,9 +650,11 @@ a:hover { color: var(--accent-color); }
 }
 
 #ocResult {
-  display: none;
+  display: block;
   margin: 14px 0 0;
   padding: 10px 13px;
+  max-height: 260px;
+  overflow-y: auto;
   border: 1px solid var(--line-color);
   border-radius: 3px;
   background: var(--surface-color);
@@ -660,13 +662,16 @@ a:hover { color: var(--accent-color); }
   font-family: "JetBrains Mono", monospace;
   font-size: 0.78rem;
   line-height: 1.5;
-  white-space: pre-wrap;
-  word-break: break-word;
   text-align: left;
   box-shadow: var(--shadow);
 }
-#ocResult:not(:empty) { display: block; }
-#ocResult.is-error { color: var(--accent-color); }
+#ocResult:empty { display: none; }
+.oc-msg { white-space: pre-wrap; word-break: break-word; }
+.oc-user { margin-bottom: 4px; color: var(--muted-color); }
+.oc-user::before { content: "> "; color: var(--accent-color); }
+.oc-assistant { margin-bottom: 10px; color: var(--font-soft); }
+.oc-assistant:last-child { margin-bottom: 0; }
+.oc-thinking { color: var(--muted-color); }
 
 @media (max-width: 600px) {
   .header-container { padding: 0 16px; }

@@ -76,7 +76,10 @@ async function sendToOpenCode(query) {
   if (inFlight || !query) return
   inFlight = true
   const box = $('#ocResult')
-  box.removeClass('is-error').text('thinking…')
+  const user = $('<div>').addClass('oc-msg oc-user').text(query)
+  const reply = $('<div>').addClass('oc-msg oc-assistant oc-thinking').text('thinking…')
+  box.append(user, reply)
+  scrollChat(box)
   try {
     const sessionID = await ensureSession()
     const message = await fetchJson(`/session/${sessionID}/message`, {
@@ -84,13 +87,19 @@ async function sendToOpenCode(query) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ agent: 'ask', parts: [{ type: 'text', text: query }] })
     })
-    box.text(extractText(message.parts) || '(no response)')
+    reply.removeClass('oc-thinking').text(extractText(message.parts) || '(no response)')
     maybeCompact()
   } catch (e) {
-    box.addClass('is-error').text('opencode server offline')
+    reply.removeClass('oc-thinking').text('opencode server offline')
   } finally {
     inFlight = false
+    scrollChat(box)
   }
+}
+
+function scrollChat(box) {
+  const node = box[0]
+  if (node) node.scrollTop = node.scrollHeight
 }
 
 async function getOpenCodeHealth() {
