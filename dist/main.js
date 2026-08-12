@@ -27,11 +27,6 @@ $('.header-container').ready(() => {
 
 const SAN_DIEGO = { lat: 32.7157, lng: -117.1611 }
 
-function getCookie(name) {
-  const match = document.cookie.split('; ').find(c => c.indexOf(name + '=') === 0)
-  return match ? match.slice(name.length + 1) : null
-}
-
 function applyTheme(dark) {
   if (dark) {
     $('html').attr('data-theme', 'dark')
@@ -78,17 +73,10 @@ function getSunTimes(lat, lng) {
 
 $('.theme-toggle').click(() => {
   const dark = $('html').attr('data-theme') !== 'dark'
-  const date = new Date()
-  date.setTime(date.getTime() + (10 * 365 * 24 * 60 * 60))
   applyTheme(dark)
-  document.cookie = `darkmode=${dark ? 'on' : 'off'}; expires=${date.toGMTString()}; path=/`
 })
 
 function initDarkmode() {
-  const cookie = getCookie('darkmode')
-  if (cookie === 'on') return applyTheme(true)
-  if (cookie === 'off') return applyTheme(false)
-
   getCurrentLocation().then(loc => getSunTimes(loc.lat, loc.lng))
     .then(times => {
       if (!times) return
