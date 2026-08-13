@@ -77,7 +77,8 @@ async function sendToOpenCode(query) {
   inFlight = true
   const box = $('#ocResult')
   const user = $('<div>').addClass('oc-msg oc-user').text(query)
-  const reply = $('<div>').addClass('oc-msg oc-assistant oc-thinking').text('thinking…')
+  const reply = $('<div>').addClass('oc-msg oc-assistant oc-thinking')
+    .append($('<span>').addClass('oc-dots').append($('<span>'), $('<span>'), $('<span>')))
   box.append(user, reply)
   scrollChat(box)
   try {

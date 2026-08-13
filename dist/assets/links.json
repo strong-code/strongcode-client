@@ -110,16 +110,12 @@
           "url": "https://old.reddit.com/r/devops/"
         },
         {
-          "title": "PiHole",
-          "url": "http://pi.hole/admin/index.php"
-        },
-        {
-          "title": "Dashboard",
-          "url": "http://health.strongco.de"
-        },
-        {
           "title": "Whats My DNS",
           "url": "https://www.whatsmydns.net/"
+        },
+        {
+          "title": "OpenCode",
+          "url": "https://opencode.ai/workspace/wrk_01KZ77YVVT29Z7THA7FY9AJV3E/usage"
         },
         {
           "title": "Cobalt",

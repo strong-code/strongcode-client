@@ -673,6 +673,20 @@ a:hover { color: var(--accent-color); }
 .oc-assistant { margin-bottom: 10px; color: var(--font-soft); }
 .oc-assistant:last-child { margin-bottom: 0; }
 .oc-thinking { color: var(--muted-color); }
+.oc-dots { display: inline-flex; gap: 4px; }
+.oc-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  animation: oc-bounce 1.2s infinite ease-in-out;
+}
+.oc-dots span:nth-child(2) { animation-delay: 0.15s; }
+.oc-dots span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes oc-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
 
 @media (max-width: 600px) {
   .header-container { padding: 0 16px; }
