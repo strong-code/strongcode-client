@@ -33,7 +33,7 @@ function initSearch() {
     if (e.key === ' ') {
       chunk = searchBar.val().split(' ')[0]
 
-      if (chunk === '!oc') {
+      if (chunk === '?') {
         ocMode = true
         welcomeMsg.text('asking opencode')
         searchBar.attr('placeholder', 'OpenCode').val('').blur().focus()
