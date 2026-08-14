@@ -667,6 +667,11 @@ a:hover { color: var(--accent-color); }
   box-shadow: var(--shadow);
 }
 #ocResult:empty { display: none; }
+#ocResult { scrollbar-width: thin; scrollbar-color: var(--line-color) transparent; }
+#ocResult::-webkit-scrollbar { width: 8px; }
+#ocResult::-webkit-scrollbar-track { background: transparent; }
+#ocResult::-webkit-scrollbar-thumb { background: var(--line-color); border-radius: 4px; }
+#ocResult::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
 .oc-msg { white-space: pre-wrap; word-break: break-word; }
 .oc-user { margin-bottom: 4px; color: var(--muted-color); }
 .oc-user::before { content: "> "; color: var(--accent-color); }
