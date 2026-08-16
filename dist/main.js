@@ -3,6 +3,7 @@ import './assets/js/paste.js'
 import { initSearch } from './assets/js/search.js'
 import { initTracking, toggleTracking } from './assets/js/tracking.js'
 import { initOpenCode, getOpenCodeHealth } from './assets/js/opencode.js'
+import { isMobileDevice } from './assets/js/device.js'
 const HOST = (window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://strongco.de')
 
 $('body').ready(() => {
@@ -13,14 +14,16 @@ $('body').ready(() => {
   initLinks()
   initPaste()
   initSearch()
-  initHealth()
+  if (!isMobileDevice()) {
+    initHealth()
+    initOpenCode()
+  }
   initBuildInfo()
   initKeyHandlers()
   initWeather()
   initDarkmode()
   initNotes()
   initTracking(HOST)
-  initOpenCode()
 })
 
 $('.header-container').ready(() => {

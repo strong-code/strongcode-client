@@ -1,5 +1,6 @@
 import './jquery-3.5.1.min.js'
 import { sendToOpenCode } from './opencode.js'
+import { isMobileDevice } from './device.js'
 
 const searchSources = {
   "!g":        ["https://www.google.com/search?&q={Q}",                   "Google"],
@@ -21,11 +22,11 @@ const searchSources = {
 function initSearch() {
   const searchBar = $('#searchBar')
   const welcomeMsg = $('#welcomeMsg')
-  searchBar.focus()
   let source = searchSources['!b'] // default
   let chunk
 
   searchBar.attr('placeholder', source[1])
+  if (!isMobileDevice()) searchBar.focus()
 
   let ocMode = false
 
@@ -33,7 +34,7 @@ function initSearch() {
     if (e.key === ' ') {
       chunk = searchBar.val().split(' ')[0]
 
-      if (chunk === '?') {
+      if (chunk === '?' && !isMobileDevice()) {
         ocMode = true
         welcomeMsg.text('asking opencode')
         searchBar.attr('placeholder', 'OpenCode').val('').blur().focus()
