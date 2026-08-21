@@ -63,6 +63,20 @@ function fmtDate(ts) {
   return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
+function renderHistory(container, events) {
+  if (!events || events.length === 0) {
+    container.append($('<p>').addClass('tracking-history-empty').text('No tracking events yet.'))
+    return
+  }
+  events.forEach(ev => {
+    container.append(
+      $('<div>').addClass('tracking-history-row')
+        .append($('<span>').addClass('tracking-history-status').text(ev.status + (ev.location ? ` — ${ev.location}` : '')))
+        .append($('<span>').addClass('tracking-history-time').text(fmtTime(ev.updated_at)))
+    )
+  })
+}
+
 function setStatus(msg) {
   $('#trackingStatus').text(msg || '')
 }
@@ -207,19 +221,7 @@ function toggleDetail(item, s) {
   $.get(`${API}/api/track/${encodeURIComponent(s.tracking_number)}?all=true`)
   .done(res => {
     const history = detail.find('.tracking-history').empty()
-
-    if (!res.data || res.data.length === 0) {
-      history.append($('<p>').addClass('tracking-history-empty').text('No tracking events yet.'))
-      return
-    }
-
-    res.data.forEach(ev => {
-      history.append(
-        $('<div>').addClass('tracking-history-row')
-          .append($('<span>').addClass('tracking-history-status').text(ev.status + (ev.location ? ` — ${ev.location}` : '')))
-          .append($('<span>').addClass('tracking-history-time').text(fmtTime(ev.updated_at)))
-      )
-    })
+    renderHistory(history, res.data)
   })
   .fail(() => detail.find('.tracking-history').text('error loading history'))
 }
@@ -394,17 +396,7 @@ function renderDeliveries() {
         $.get(`${API}/api/track/${encodeURIComponent(d.tracking_number)}?all=true`)
         .done(res => {
           history.empty()
-          if (!res.data || res.data.length === 0) {
-            history.append($('<p>').addClass('tracking-history-empty').text('No tracking events yet.'))
-            return
-          }
-          res.data.forEach(ev => {
-            history.append(
-              $('<div>').addClass('tracking-history-row')
-                .append($('<span>').addClass('tracking-history-status').text(ev.status + (ev.location ? ` — ${ev.location}` : '')))
-                .append($('<span>').addClass('tracking-history-time').text(fmtTime(ev.updated_at)))
-            )
-          })
+          renderHistory(history, res.data)
         })
         .fail(() => {
           history.empty().append($('<p>').addClass('tracking-history-empty').text('error loading history'))
