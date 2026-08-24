@@ -21,6 +21,7 @@ $('body').ready(() => {
   initBuildInfo()
   initKeyHandlers()
   initWeather()
+  initFutures()
   initDarkmode()
   initNotes()
   initTracking(HOST)
@@ -46,6 +47,7 @@ function applyTheme(dark) {
     })
     $('#darkmodeToggle').removeClass('dark-theme').attr('src', 'assets/icons/darkmode.png')
   }
+  renderFutures()
 }
 
 function getCurrentLocation() {
@@ -298,6 +300,60 @@ function initDate() {
     .text(days[today.getDay()])
     .css('font-size', '3.5rem')
     .after(`<br>${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`)
+}
+
+const FUTURES = [
+  { symbol: 'CME_MINI:ES1!', name: 'S&P' },
+  { symbol: 'CBOT_MINI:YM1!', name: 'Dow' },
+  { symbol: 'CME_MINI:NQ1!', name: 'Nasdaq' }
+]
+
+// Sun-Thu nights, Pacific time (early-morning hours count as the previous night)
+function futuresNightActive() {
+  const pt = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }))
+  const hour = pt.getHours()
+  const night = hour < 4 ? pt.getDay() - 1 : pt.getDay()
+  return [0, 1, 2, 3, 4].includes(night) && (hour >= 13 || hour < 4)
+}
+
+function renderFutures() {
+  const el = $('#futures')
+  if (!futuresNightActive()) {
+    el.empty().hide()
+    return
+  }
+  const theme = $('html').attr('data-theme') === 'light' ? 'light' : 'dark'
+  el.show()
+  if (el.children().length && el.data('theme') === theme) return
+  el.data('theme', theme).empty()
+  FUTURES.forEach(f => {
+    const cfg = encodeURIComponent(JSON.stringify({
+      symbol: f.symbol,
+      width: '100%',
+      height: 200,
+      dateRange: '1D',
+      colorTheme: theme,
+      isTransparent: true
+    }))
+    el.append(
+      $('<a>')
+        .addClass('futures-item')
+        .attr({ href: `https://www.tradingview.com/chart/?symbol=${encodeURIComponent(f.symbol)}`, target: '_blank' })
+        .append(
+          $('<iframe>').attr({
+            src: `https://s.tradingview.com/embed-widget/mini-symbol-overview/?locale=en#${cfg}`,
+            scrolling: 'no',
+            allowtransparency: 'true',
+            title: `${f.name} futures`
+          })
+        )
+    )
+  })
+}
+
+function initFutures() {
+  renderFutures()
+  setInterval(renderFutures, 5 * 60 * 1000)
 }
 
 function initWeather() {

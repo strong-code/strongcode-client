@@ -466,6 +466,23 @@ a:hover { color: var(--accent-color); }
 #weather a { color: var(--muted-color); }
 #weather a:hover { color: var(--accent-color); }
 
+#futures {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+.futures-item {
+  display: block;
+  width: 240px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--surface-color);
+}
+.futures-item iframe { width: 100%; height: 100%; border: 0; }
+
 #search { width: min(100%, 620px); margin: 34px auto 0; }
 .search-shell {
   display: flex;
