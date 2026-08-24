@@ -319,6 +319,22 @@ function futuresSparkline(points) {
     .join(' ')
 }
 
+// jQuery $('<svg>') lands in the HTML namespace and renders nothing - build via createElementNS
+function futuresGraph(points) {
+  const path = futuresSparkline(points)
+  if (!path) return null
+  const ns = 'http://www.w3.org/2000/svg'
+  const svg = document.createElementNS(ns, 'svg')
+  svg.setAttribute('viewBox', '0 0 100 40')
+  svg.setAttribute('preserveAspectRatio', 'none')
+  const line = document.createElementNS(ns, 'polyline')
+  line.setAttribute('points', path)
+  line.setAttribute('fill', 'none')
+  line.setAttribute('vector-effect', 'non-scaling-stroke')
+  svg.appendChild(line)
+  return $(svg)
+}
+
 function renderFutures() {
   const el = $('#futures')
   if (!futuresNightActive()) {
@@ -335,7 +351,6 @@ function renderFutures() {
         const dir = pct === null ? '' : pct >= 0 ? 'futures-up' : 'futures-down'
         const pctText = pct === null ? '--' : `${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%`
         const priceText = typeof f.price === 'number' ? f.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '--'
-        const points = futuresSparkline(f.points)
 
         el.append(
           $('<a>')
@@ -345,9 +360,7 @@ function renderFutures() {
               $('<div>').addClass('futures-head')
                 .append($('<span>').addClass('futures-name').text(f.name))
                 .append($('<span>').addClass(`futures-pct ${dir}`).text(pctText)),
-              points ? $('<svg>')
-                .attr({ viewBox: '0 0 100 40', preserveAspectRatio: 'none' })
-                .append($('<polyline>').attr({ points, fill: 'none' })) : null,
+              futuresGraph(f.points),
               $('<div>').addClass('futures-price').text(priceText)
             )
         )
