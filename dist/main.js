@@ -47,7 +47,6 @@ function applyTheme(dark) {
     })
     $('#darkmodeToggle').removeClass('dark-theme').attr('src', 'assets/icons/darkmode.png')
   }
-  renderFutures()
 }
 
 function getCurrentLocation() {
@@ -302,12 +301,6 @@ function initDate() {
     .after(`<br>${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`)
 }
 
-const FUTURES = [
-  { symbol: 'CME_MINI:ES1!', name: 'S&P' },
-  { symbol: 'CBOT_MINI:YM1!', name: 'Dow' },
-  { symbol: 'CME_MINI:NQ1!', name: 'Nasdaq' }
-]
-
 // Sun-Thu nights, Pacific time (early-morning hours count as the previous night)
 function futuresNightActive() {
   const pt = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }))
@@ -316,39 +309,53 @@ function futuresNightActive() {
   return [0, 1, 2, 3, 4].includes(night) && (hour >= 13 || hour < 4)
 }
 
+function futuresSparkline(points) {
+  if (!points || points.length < 2) return ''
+  const min = Math.min(...points)
+  const max = Math.max(...points)
+  const span = max - min || 1
+  return points
+    .map((p, i) => `${((i / (points.length - 1)) * 100).toFixed(2)},${(39 - ((p - min) / span) * 36).toFixed(2)}`)
+    .join(' ')
+}
+
 function renderFutures() {
   const el = $('#futures')
   if (!futuresNightActive()) {
     el.empty().hide()
     return
   }
-  const theme = $('html').attr('data-theme') === 'light' ? 'light' : 'dark'
   el.show()
-  if (el.children().length && el.data('theme') === theme) return
-  el.data('theme', theme).empty()
-  FUTURES.forEach(f => {
-    const cfg = encodeURIComponent(JSON.stringify({
-      symbol: f.symbol,
-      width: '100%',
-      height: 200,
-      dateRange: '1D',
-      colorTheme: theme,
-      isTransparent: true
-    }))
-    el.append(
-      $('<a>')
-        .addClass('futures-item')
-        .attr({ href: `https://www.tradingview.com/chart/?symbol=${encodeURIComponent(f.symbol)}`, target: '_blank' })
-        .append(
-          $('<iframe>').attr({
-            src: `https://s.tradingview.com/embed-widget/mini-symbol-overview/?locale=en#${cfg}`,
-            scrolling: 'no',
-            allowtransparency: 'true',
-            title: `${f.name} futures`
-          })
+
+  $.get(HOST + '/api/futures')
+    .done(res => {
+      el.empty()
+      res.futures.forEach(f => {
+        const pct = f.previousClose ? ((f.price - f.previousClose) / f.previousClose) * 100 : null
+        const dir = pct === null ? '' : pct >= 0 ? 'futures-up' : 'futures-down'
+        const pctText = pct === null ? '--' : `${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%`
+        const priceText = typeof f.price === 'number' ? f.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '--'
+        const points = futuresSparkline(f.points)
+
+        el.append(
+          $('<a>')
+            .addClass(`futures-item ${dir}`)
+            .attr({ href: `https://finance.yahoo.com/quote/${encodeURIComponent(f.symbol)}`, target: '_blank' })
+            .append(
+              $('<div>').addClass('futures-head')
+                .append($('<span>').addClass('futures-name').text(f.name))
+                .append($('<span>').addClass(`futures-pct ${dir}`).text(pctText)),
+              points ? $('<svg>')
+                .attr({ viewBox: '0 0 100 40', preserveAspectRatio: 'none' })
+                .append($('<polyline>').attr({ points, fill: 'none' })) : null,
+              $('<div>').addClass('futures-price').text(priceText)
+            )
         )
-    )
-  })
+      })
+    })
+    .fail(e => {
+      console.log('Unable to fetch futures quotes', e)
+    })
 }
 
 function initFutures() {

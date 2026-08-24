@@ -9,6 +9,7 @@ My startpage
 - URL shortener dropzone
 - Recent paste/rehost gallery
 - Shipment tracking widget (press `t`): add tracking numbers (carrier is auto-detected when possible), attach a description to each shipment, expand for full tracking history, archive or delete entries
+- Futures widget (Sun-Thu nights after Pacific market close): S&P/Dow/Nasdaq e-mini sparkline, price and % change via `/api/futures` on the strongcode server
 - dark/light mode
 
 # Deployment
