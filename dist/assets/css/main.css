@@ -471,11 +471,21 @@ a:hover { color: var(--accent-color); }
   left: 0;
   right: 0;
   bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  z-index: 3;
+  pointer-events: none;
+}
+.futures-title {
+  text-align: center;
+  font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.18em;
+  color: var(--muted-color);
+  margin-bottom: 6px;
+}
+.futures-row {
   display: flex;
   gap: 10px;
   justify-content: center;
-  z-index: 3;
-  pointer-events: none;
 }
 .futures-item {
   position: relative;
@@ -530,7 +540,7 @@ a:hover { color: var(--accent-color); }
   box-shadow: var(--shadow);
 }
 @media (max-width: 640px) {
-  #futures { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding: 0 10px; }
+  .futures-row { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding: 0 10px; }
 }
 
 #search { width: min(100%, 620px); margin: 34px auto 0; }

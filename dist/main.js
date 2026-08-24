@@ -377,12 +377,14 @@ function futuresGraph(points, baseline, times) {
 }
 
 function renderFutures() {
-  const el = $('#futures')
+  const wrap = $('#futures')
+  const el = $('#futuresRow')
   if (!futuresNightActive()) {
-    el.empty().hide()
+    el.empty()
+    wrap.hide()
     return
   }
-  el.show()
+  wrap.show()
 
   $.get(HOST + '/api/futures')
     .done(res => {
