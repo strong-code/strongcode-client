@@ -309,29 +309,38 @@ function futuresNightActive() {
   return [0, 1, 2, 3, 4].includes(night) && (hour >= 13 || hour < 4)
 }
 
-function futuresSparkline(points) {
-  if (!points || points.length < 2) return ''
-  const min = Math.min(...points)
-  const max = Math.max(...points)
-  const span = max - min || 1
-  return points
-    .map((p, i) => `${((i / (points.length - 1)) * 100).toFixed(2)},${(39 - ((p - min) / span) * 36).toFixed(2)}`)
-    .join(' ')
-}
-
 // jQuery $('<svg>') lands in the HTML namespace and renders nothing - build via createElementNS
-function futuresGraph(points) {
-  const path = futuresSparkline(points)
-  if (!path) return null
+// baseline (previous close) is included in min/max so the reference line never clips out of view
+function futuresGraph(points, baseline) {
+  if (!points || points.length < 2) return null
+  const values = typeof baseline === 'number' ? points.concat([baseline]) : points
+  const min = Math.min(...values)
+  const max = Math.max(...values)
+  const span = max - min || 1
+  const y = v => +(39 - ((v - min) / span) * 36).toFixed(2)
   const ns = 'http://www.w3.org/2000/svg'
   const svg = document.createElementNS(ns, 'svg')
   svg.setAttribute('viewBox', '0 0 100 40')
   svg.setAttribute('preserveAspectRatio', 'none')
+
   const line = document.createElementNS(ns, 'polyline')
-  line.setAttribute('points', path)
+  line.setAttribute('points', points
+    .map((p, i) => `${((i / (points.length - 1)) * 100).toFixed(2)},${y(p)}`)
+    .join(' '))
   line.setAttribute('fill', 'none')
   line.setAttribute('vector-effect', 'non-scaling-stroke')
   svg.appendChild(line)
+
+  if (typeof baseline === 'number') {
+    const ref = document.createElementNS(ns, 'line')
+    ref.setAttribute('x1', '0')
+    ref.setAttribute('x2', '100')
+    ref.setAttribute('y1', y(baseline))
+    ref.setAttribute('y2', y(baseline))
+    ref.setAttribute('vector-effect', 'non-scaling-stroke')
+    ref.setAttribute('class', 'futures-baseline')
+    svg.appendChild(ref)
+  }
   return $(svg)
 }
 
@@ -360,7 +369,7 @@ function renderFutures() {
               $('<div>').addClass('futures-head')
                 .append($('<span>').addClass('futures-name').text(f.name))
                 .append($('<span>').addClass(`futures-pct ${dir}`).text(pctText)),
-              futuresGraph(f.points),
+              futuresGraph(f.points, f.previousClose),
               $('<div>').addClass('futures-price').text(priceText)
             )
         )

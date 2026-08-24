@@ -498,6 +498,7 @@ a:hover { color: var(--accent-color); }
 .futures-down { color: var(--danger-color); }
 .futures-item svg { width: 100%; height: 56px; }
 .futures-item polyline { stroke: currentColor; stroke-width: 1.5; }
+.futures-baseline { stroke: var(--muted-color); stroke-width: 1; stroke-dasharray: 3 3; }
 .futures-item svg { color: var(--muted-color); }
 .futures-item.futures-up svg { color: var(--success-color); }
 .futures-item.futures-down svg { color: var(--danger-color); }
