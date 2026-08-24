@@ -311,7 +311,7 @@ function futuresNightActive() {
 
 // jQuery $('<svg>') lands in the HTML namespace and renders nothing - build via createElementNS
 // baseline (previous close) is included in min/max so the reference line never clips out of view
-function futuresGraph(points, baseline) {
+function futuresGraph(points, baseline, times) {
   if (!points || points.length < 2) return null
   const values = typeof baseline === 'number' ? points.concat([baseline]) : points
   const min = Math.min(...values)
@@ -341,6 +341,38 @@ function futuresGraph(points, baseline) {
     ref.setAttribute('class', 'futures-baseline')
     svg.appendChild(ref)
   }
+
+  const crosshair = document.createElementNS(ns, 'line')
+  crosshair.setAttribute('y1', '1')
+  crosshair.setAttribute('y2', '39')
+  crosshair.setAttribute('class', 'futures-crosshair')
+  crosshair.setAttribute('visibility', 'hidden')
+  svg.appendChild(crosshair)
+
+  const fmt = v => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  const readout = () => $(svg).closest('.futures-item').find('.futures-readout')
+
+  $(svg).on('mousemove', ev => {
+    const n = points.length
+    const rect = svg.getBoundingClientRect()
+    const frac = Math.min(1, Math.max(0, (ev.clientX - rect.left) / rect.width))
+    const idx = Math.round(frac * (n - 1))
+    const x = ((idx / (n - 1)) * 100).toFixed(2)
+    crosshair.setAttribute('x1', x)
+    crosshair.setAttribute('x2', x)
+    crosshair.setAttribute('visibility', 'visible')
+    const t = times && times[idx]
+    const timeText = t ? ` · ${new Date(t * 1000).toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: '2-digit' })}` : ''
+    readout().text(`$${fmt(points[idx])}${timeText}`)
+      .css('left', `${Math.min(88, Math.max(12, frac * 100))}%`)
+      .show()
+  })
+
+  $(svg).on('mouseleave', () => {
+    crosshair.setAttribute('visibility', 'hidden')
+    readout().hide()
+  })
+
   return $(svg)
 }
 
@@ -369,7 +401,8 @@ function renderFutures() {
               $('<div>').addClass('futures-head')
                 .append($('<span>').addClass('futures-name').text(f.name))
                 .append($('<span>').addClass(`futures-pct ${dir}`).text(pctText)),
-              futuresGraph(f.points, f.previousClose),
+              futuresGraph(f.points, f.previousClose, f.times),
+              $('<span>').addClass('futures-readout'),
               $('<div>').addClass('futures-price').text(priceText)
             )
         )
