@@ -378,7 +378,8 @@ function futuresGraph(points, baseline, times) {
 
 function renderFutures() {
   const wrap = $('#futures')
-  const el = $('#futuresRow')
+  // fall back to the pre-title markup if a stale deploy pairs new JS with old HTML
+  const el = $('#futuresRow').length ? $('#futuresRow') : wrap
   if (!futuresNightActive()) {
     el.empty()
     wrap.hide()
