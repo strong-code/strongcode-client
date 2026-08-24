@@ -482,8 +482,13 @@ function initNotes() {
   const list = $('#notesList')
   const empty = $('#notesEmpty')
   let notes = loadNotes()
-  widget.addClass('is-collapsed')
-  $('#notesCollapse').attr({ 'aria-expanded': false, 'aria-label': 'Expand notes' }).text('+')
+  // stay expanded if any note is yellow-highlighted, so highlights are seen on load
+  const openOnLoad = notes.some(note => note.glow === 'yellow')
+  widget.toggleClass('is-collapsed', !openOnLoad)
+  $('#notesCollapse').attr({
+    'aria-expanded': openOnLoad,
+    'aria-label': openOnLoad ? 'Collapse notes' : 'Expand notes'
+  }).text(openOnLoad ? '-' : '+')
 
   $('#notesCollapse').click(() => {
     const collapsed = widget.toggleClass('is-collapsed').hasClass('is-collapsed')

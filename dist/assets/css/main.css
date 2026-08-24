@@ -477,8 +477,8 @@ a:hover { color: var(--accent-color); }
 .futures-title {
   text-align: center;
   font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 0.64rem;
-  letter-spacing: 0.18em;
+  font-size: 0.96rem;
+  letter-spacing: 0.14em;
   color: var(--muted-color);
   margin-bottom: 6px;
 }
@@ -499,6 +499,7 @@ a:hover { color: var(--accent-color); }
   background: var(--surface-color);
   color: var(--font-color);
 }
+.futures-item:hover { z-index: 5; }
 .futures-head { display: flex; justify-content: space-between; align-items: baseline; }
 .futures-name {
   font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
