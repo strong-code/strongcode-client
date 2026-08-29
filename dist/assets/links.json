@@ -120,6 +120,10 @@
         {
           "title": "Cobalt",
           "url": "https://cobalt.tools/"
+        },
+        {
+          "title": "Seerr",
+          "url": "http://192.168.0.84:5055"
         }
       ]
     },
