@@ -27,10 +27,21 @@ function trackingUrl(carrier, trackingNumber) {
     usps:         `https://tools.usps.com/tracking/${encodeURIComponent(tn)}`,
     fedex:        `https://www.fedex.com/fedextrack/?trknbr=${encodeURIComponent(tn)}`,
     dhl_express:  `https://www.dhl.com/us-en/home/tracking.html?tracking-id=${encodeURIComponent(tn)}`,
-    ontrac:       `https://www.ontrac.com/trackingresult.asp?tracking_number=${encodeURIComponent(tn)}`,
+    ontrac:       `https://www.ontrac.com/tracking/?number=${encodeURIComponent(tn)}`,
     lasership:    `https://www.lasership.com/track/${encodeURIComponent(tn)}`
   }
   return urls[carrier] || ''
+}
+
+// OnTrac is saved by the server as a link-only entry: there are no carrier
+// events to poll, so the tracking number itself is the only affordance.
+function isLinkOnly(s) {
+  return !!s && s.tracking_mode === 'link_only'
+}
+
+function carrierName(slug) {
+  const c = CARRIERS.find(x => x.slug === slug)
+  return c ? c.name : String(slug || 'the carrier')
 }
 
 function showTrackingNumber(anchor, s) {
@@ -145,7 +156,14 @@ function addShipment() {
     $('#trackingItemInput').val('')
     closeAddForm()
     updateCarrierHint()
-    setStatus(already ? `already tracking ${added.tracking_number}` : `added ${added.tracking_number}`)
+
+    if (already) {
+      setStatus(`already tracking ${added.tracking_number}`)
+    } else if (isLinkOnly(added)) {
+      setStatus(`Shipment saved. Live updates aren't available; use the tracking number to check ${carrierName(added.carrier)}.`)
+    } else {
+      setStatus(`added ${added.tracking_number}`)
+    }
   })
   .fail(xhr => {
     adding = false
@@ -216,14 +234,26 @@ function toggleDetail(item, s) {
   }
 
   item.addClass('is-expanded')
-  detail.find('.tracking-history').text('loading…')
+
+  const history = detail.find('.tracking-history')
+
+  // Link-only entries have no carrier events to fetch: explain, do not poll.
+  if (isLinkOnly(s)) {
+    if (!history.children().length) {
+      history.append($('<p>').addClass('tracking-history-empty')
+        .text('Link-only entry — no automatic updates. Use the tracking number to check on the carrier site.'))
+    }
+    return
+  }
+
+  history.text('loading…')
 
   $.get(`${API}/api/track/${encodeURIComponent(s.tracking_number)}?all=true`)
   .done(res => {
-    const history = detail.find('.tracking-history').empty()
+    history.empty()
     renderHistory(history, res.data)
   })
-  .fail(() => detail.find('.tracking-history').text('error loading history'))
+  .fail(() => history.text('error loading history'))
 }
 
 function editItem(row, s) {
@@ -275,11 +305,14 @@ function createTrackingList() {
   $('#trackingEmpty').toggle(shipments.length === 0)
 
   shipments.forEach(s => {
-    const delivered = !!s.delivered || String(s.status || '').toUpperCase() === 'DELIVERED'
+    const linkOnly = isLinkOnly(s)
+    const delivered = !linkOnly && (!!s.delivered || String(s.status || '').toUpperCase() === 'DELIVERED')
     const title = s.item || `${s.carrier.toUpperCase()} ${s.tracking_number.slice(-6)}`
-    const statusLine = s.status
-      ? s.status + (s.location ? ` — ${s.location}` : '')
-      : 'Awaiting first carrier update'
+    const statusLine = linkOnly
+      ? `no automatic updates — check with ${carrierName(s.carrier)}`
+      : s.status
+        ? s.status + (s.location ? ` — ${s.location}` : '')
+        : 'Awaiting first carrier update'
 
     const row = $('<div>').addClass('tracking-row')
 
@@ -316,7 +349,9 @@ function createTrackingList() {
     row.append(titleBtn, tnBtn, noteBtn, delivered ? dismissBtn : deleteBtn)
 
     const sub = $('<div>').addClass('tracking-subline')
-      .append(document.createTextNode(statusLine))
+    sub.append(linkOnly
+      ? $('<span>').addClass('tracking-link-only').text(statusLine)
+      : document.createTextNode(statusLine))
 
     const detail = $('<div>').addClass('tracking-detail')
       .append($('<div>').addClass('tracking-history'))
@@ -328,7 +363,10 @@ function createTrackingList() {
       detail.append(archiveBtn)
     }
 
-    list.append($('<article>').addClass('tracking-item').toggleClass('is-delivered', delivered).append(row, sub, detail))
+    list.append($('<article>').addClass('tracking-item')
+      .toggleClass('is-delivered', delivered)
+      .toggleClass('is-link-only', linkOnly)
+      .append(row, sub, detail))
 
     if (delivered) scheduleDeliveredRemoval(s)
   })

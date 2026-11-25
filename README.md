@@ -8,7 +8,7 @@ My startpage
 - Pastebin and media rehosting dropzone
 - URL shortener dropzone
 - Recent paste/rehost gallery
-- Shipment tracking widget (press `t`): add tracking numbers (carrier is auto-detected when possible), attach a description to each shipment, expand for full tracking history, archive or delete entries
+- Shipment tracking widget (press `t`): add tracking numbers (carrier is auto-detected when possible), attach a description to each shipment, expand for full tracking history, archive or delete entries. OnTrac shipments are saved as link-only entries: they show a "no automatic updates" note and the tracking number opens OnTrac's tracking page, with no background polling
 - Futures widget (Sun-Thu nights after Pacific market close): S&P/Dow/Nasdaq e-mini sparkline, price and % change via `/api/futures` on the strongcode server
 - dark/light mode
 
