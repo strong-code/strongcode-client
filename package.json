@@ -1,0 +1,12 @@
+{
+  "name": "strongcode-client",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Strong-code start page (static files served from dist/)",
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "devDependencies": {
+    "jsdom": "^31.0.1"
+  }
+}
