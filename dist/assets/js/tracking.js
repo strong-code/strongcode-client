@@ -13,7 +13,7 @@ const CARRIERS = [
 
 let API = ''
 let shipments = []
-let deliveries = []
+let loadingDeliveries = false
 
 function detectCarrier(trackingNumber) {
   const tn = trackingNumber.trim().replace(/\s+/g, '')
@@ -152,6 +152,7 @@ function addShipment() {
       shipments.unshift(added)
       createTrackingList()
     }
+    if (added.delivered && !$('#trackingDeliveries').prop('hidden')) loadDeliveries()
     $('#trackingNumberInput').val('')
     $('#trackingItemInput').val('')
     closeAddForm()
@@ -285,19 +286,22 @@ function editItem(row, s) {
 
 const deliveredTimers = new Set()
 
-function scheduleDeliveredRemoval(s) {
+function scheduleDeliveredExpiry(s) {
   if (!s.delivered_at || deliveredTimers.has(s.tracking_number)) return
 
   const expiresAt = new Date(s.delivered_at).getTime() + 24 * 60 * 60 * 1000
   const delay = expiresAt - Date.now()
 
-  if (!Number.isFinite(delay) || delay <= 0) return
+  if (!Number.isFinite(delay)) return
 
   deliveredTimers.add(s.tracking_number)
   setTimeout(() => {
     deliveredTimers.delete(s.tracking_number)
-    removeShipment(s.tracking_number)
-  }, delay)
+    // The server archives expired deliveries on the next active-list fetch.
+    // Expiring an active row must never delete its delivery history.
+    shipments = shipments.filter(x => x.tracking_number !== s.tracking_number)
+    createTrackingList()
+  }, Math.max(0, delay))
 }
 
 function createTrackingList() {
@@ -342,9 +346,9 @@ function createTrackingList() {
       .text('x')
       .on('click', () => removeShipment(s.tracking_number))
 
-    const dismissBtn = $('<button>').addClass('tracking-dismiss').attr({ type: 'button', 'aria-label': 'Remove delivered shipment', title: 'Remove delivered shipment' })
+    const dismissBtn = $('<button>').addClass('tracking-dismiss').attr({ type: 'button', 'aria-label': 'Archive delivered shipment', title: 'Archive delivered shipment' })
       .text('✓')
-      .on('click', () => removeShipment(s.tracking_number))
+      .on('click', () => archiveShipment(s.tracking_number))
 
     row.append(titleBtn, tnBtn, noteBtn, delivered ? dismissBtn : deleteBtn)
 
@@ -368,7 +372,7 @@ function createTrackingList() {
       .toggleClass('is-link-only', linkOnly)
       .append(row, sub, detail))
 
-    if (delivered) scheduleDeliveredRemoval(s)
+    if (delivered) scheduleDeliveredExpiry(s)
   })
 }
 
@@ -406,8 +410,12 @@ function toggleAddForm() {
   }
 }
 
-function renderDeliveries() {
+function renderDeliveries(deliveries) {
   const box = $('#trackingDeliveries').empty()
+  if (!deliveries.length) {
+    box.append($('<p>').addClass('tracking-history-empty').text('No recent deliveries.'))
+    return
+  }
 
   deliveries.forEach(d => {
     const title = d.item || `${d.carrier.toUpperCase()} ${String(d.tracking_number).slice(-6)}`
@@ -449,13 +457,27 @@ function toggleDeliveries() {
   const box = $('#trackingDeliveries')
   const open = box.prop('hidden')
 
-  if (open) {
-    renderDeliveries()
-    box.prop('hidden', false)
-  } else {
-    box.prop('hidden', true)
-  }
+  box.prop('hidden', !open)
   $('#trackingDeliveriesBtn').toggleClass('is-open', open)
+  if (open) {
+    box.empty().append($('<p>').addClass('tracking-history-empty').text('loading…'))
+    loadDeliveries()
+  }
+}
+
+function loadDeliveries() {
+  if (loadingDeliveries) return
+  loadingDeliveries = true
+
+  $.get(API + '/api/track/deliveries')
+  .done(res => {
+    loadingDeliveries = false
+    if (!$('#trackingDeliveries').prop('hidden')) renderDeliveries((res && res.deliveries) || [])
+  })
+  .fail(() => {
+    loadingDeliveries = false
+    $('#trackingDeliveries').empty().append($('<p>').addClass('tracking-history-empty').text('error loading deliveries'))
+  })
 }
 
 function initTracking(host) {
@@ -465,7 +487,7 @@ function initTracking(host) {
   $('#trackingAddForm').on('submit', e => { e.preventDefault(); addShipment() })
   $('#trackingAddBtn').on('click', toggleAddForm)
   $('#trackingNumberInput').on('input', updateCarrierHint)
-  $('#trackingDeliveriesBtn').on('click', toggleDeliveries)
+  $('#trackingDeliveriesBtn').prop('hidden', false).on('click', toggleDeliveries)
 
   $.get(API + '/api/track/active')
   .done(res => {
@@ -476,14 +498,6 @@ function initTracking(host) {
     }
   })
   .fail(() => setStatus('could not load shipments'))
-
-  $.get(API + '/api/track/deliveries')
-  .done(res => {
-    deliveries = (res && res.deliveries) || []
-    if (deliveries.length > 0) {
-      $('#trackingDeliveriesBtn').prop('hidden', false)
-    }
-  })
 }
 
 export { initTracking, toggleTracking, detectCarrier }

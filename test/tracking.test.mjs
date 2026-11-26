@@ -36,7 +36,7 @@ async function loadModule() {
 
 const tick = () => new Promise(resolve => setTimeout(resolve, 0))
 
-async function setup({ active = [], deliveries = [] } = {}) {
+async function setup({ active = [] } = {}) {
   const dom = new JSDOM(HTML, { url: 'http://localhost:3001/' })
   global.window = dom.window
   global.document = dom.window.document
@@ -65,11 +65,8 @@ async function setup({ active = [], deliveries = [] } = {}) {
   tracking.initTracking('http://api.test')
 
   const activeCall = calls.find(c => c.url === 'http://api.test/api/track/active')
-  const deliveriesCall = calls.find(c => c.url === 'http://api.test/api/track/deliveries')
   assert.ok(activeCall, 'init should request the active shipment list')
-  assert.ok(deliveriesCall, 'init should request recent deliveries')
   activeCall.resolve(active)
-  deliveriesCall.resolve({ deliveries })
   await tick()
 
   return { $, dom, calls }
@@ -156,7 +153,7 @@ test('link-only shipment is saved by the single normal add and shows an in-app n
   await tick()
   assert.equal(calls.filter(c => c.url.includes('/api/track/' + ONTRAC_TN)).length, 0,
     'no history fetch for a link-only entry')
-  assert.equal(calls.length, 3, 'init (2) plus the single add request — nothing else')
+  assert.equal(calls.length, 2, 'initial active-list request plus the single add request')
   assert.match($('.tracking-detail').text(), /no automatic updates/i)
 })
 
@@ -187,7 +184,7 @@ test('link-only entries from the active list render the canonical OnTrac link on
   // Still no hidden polling for a link-only entry.
   $('.tracking-title').first().trigger('click')
   await tick()
-  assert.equal(calls.length, 2, 'expanding a link-only entry makes no API call')
+  assert.equal(calls.length, 1, 'expanding a link-only entry makes no API call')
 })
 
 test('normal shipments keep their history behaviour and label', async () => {
